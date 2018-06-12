@@ -30,7 +30,8 @@ public class GeneralPetsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        ///layout
+        adapter = new ListPetsAdapter(getContext(), GetArrayItems());
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -39,8 +40,6 @@ public class GeneralPetsFragment extends Fragment {
         layout = inflater.inflate(R.layout.fragment_generalpets, container, false);
 
         listView = layout.findViewById(R.id.GeneralList);
-        adapter = new ListPetsAdapter(getContext(), GetArrayItems());
-        listView.setAdapter(adapter);
 
         return layout;
 
