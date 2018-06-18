@@ -9,6 +9,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -24,6 +25,8 @@ import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Register.RegisterActivity;
 import com.app.pawapp.Util.Util;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -38,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText userEditText;
     private TextInputEditText passEditText;
 
+    AwesomeValidation awesomeValidation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +50,12 @@ public class LoginActivity extends AppCompatActivity {
 
         ownerDao = DaoFactory.getOwnerDao(this);
 
-        userEditText = findViewById(R.id.editTextUser);
-        passEditText = findViewById(R.id.editTextPass);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+        awesomeValidation.addValidation(this, R.id.tilUser, "^[A-z].*", R.string.USER_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilPass, "^[0-9]{1,10}+$", R.string.PASS_ERROR);
+
+        userEditText = findViewById(R.id.etUser);
+        passEditText = findViewById(R.id.etPass);
 
         if(getSupportActionBar() != null)
             getSupportActionBar().hide();
@@ -62,7 +71,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void Login(View view) {
+        if (awesomeValidation.validate()) {
+            Validate();
+        }
+    }
 
+    private void Validate() {
         final ProgressDialog pd = ProgressDialog.show(this, "Iniciando sesion", "Espere porfavor");
 
         ownerDao.login(userEditText.getText().toString(), passEditText.getText().toString(), new Ws.WsCallback<Owner>() {
@@ -85,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         pd.show();
-
     }
 
     public void Register(View view) {
