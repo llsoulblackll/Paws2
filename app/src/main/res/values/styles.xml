@@ -15,8 +15,12 @@
         <item name="colorAccent">@color/colorAccentPaw</item>
     </style>
 
-    <style name="CampoTextoAzul" parent="Theme.AppCompat.Light">
+    <style name="CampoTextoAzul" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/colorPrimaryDarkPaw</item>
+    </style>
+
+    <style name="CampoNombre" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/textColor</item>
     </style>
 
     <style name="BottomNavigation">

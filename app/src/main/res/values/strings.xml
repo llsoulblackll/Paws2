@@ -35,4 +35,7 @@
     <string name="petreg">Registrar Mascota</string>
     <string name="petimage">Subir Imagen</string>
 
+    <string name="USER_ERROR">Usuario Inválido</string>
+    <string name="PASS_ERROR">Contraseña Inválida</string>
+
 </resources>
