@@ -40,7 +40,7 @@ public class PetDao implements Ws<Pet>{
                         Integer id = 0;
                         if(response != null){
                             WCFResponse<Object> result = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Object.class));
-                            ///id = (int)result.getResponse();
+                            id = (int)(double)result.getResponse();
                         }
                         onResult.execute(id);
                     }

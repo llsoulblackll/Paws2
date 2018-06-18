@@ -24,9 +24,11 @@ import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Register.RegisterActivity;
+import com.app.pawapp.Survey.SurveyActivity;
 import com.app.pawapp.Util.Util;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.gson.Gson;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -52,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         awesomeValidation.addValidation(this, R.id.tilUser, "^[A-z].*", R.string.USER_ERROR);
-        awesomeValidation.addValidation(this, R.id.tilPass, "^[0-9]{1,10}+$", R.string.PASS_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilPass, "^[0-9A-z]{1,20}+$", R.string.PASS_ERROR);
 
         userEditText = findViewById(R.id.etUser);
         passEditText = findViewById(R.id.etPass);
@@ -84,8 +86,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void execute(Owner response) {
                 if(response != null) {
-                    Util.SharedPreferencesHelper.setValue(USER_KEY, response.getId(), LoginActivity.this);
                     pd.dismiss();
+
+                    //save user current user
+                    Util.SharedPreferencesHelper.setValue(Util.LOGGED_OWNER_KEY, new Gson().toJson(response), LoginActivity.this);
+
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
