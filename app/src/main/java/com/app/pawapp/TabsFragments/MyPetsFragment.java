@@ -14,7 +14,7 @@ import com.app.pawapp.R;
 
 import java.util.ArrayList;
 
-public class MyPetsFragment extends Fragment {
+public class    MyPetsFragment extends Fragment {
 
     private ListView listView;
     private ListPetsAdapter adapter;

@@ -28,21 +28,14 @@ public class GeneralPetsFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        adapter = new ListPetsAdapter(getContext(), GetArrayItems());
-        listView.setAdapter(adapter);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         layout = inflater.inflate(R.layout.fragment_generalpets, container, false);
-
         listView = layout.findViewById(R.id.GeneralList);
 
-        return layout;
+        adapter = new ListPetsAdapter(getContext(), GetArrayItems());
+        listView.setAdapter(adapter);
 
+        return layout;
     }
 
     private ArrayList<Pets> GetArrayItems() {

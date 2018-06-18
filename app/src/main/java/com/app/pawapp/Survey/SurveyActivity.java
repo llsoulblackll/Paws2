@@ -23,6 +23,8 @@ import com.app.pawapp.DataAccess.Entity.Survey;
 import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Register.RegisterActivity;
+import com.app.pawapp.Util.Util;
+import com.google.gson.Gson;
 
 public class SurveyActivity extends AppCompatActivity {
 
@@ -127,6 +129,7 @@ public class SurveyActivity extends AppCompatActivity {
                     @Override
                     public void execute(Object response) {
                         progressDialog.dismiss();
+                        Util.SharedPreferencesHelper.setValue(Util.LOGGED_OWNER_KEY, new Gson().toJson(ownerToInsert), SurveyActivity.this);
                         Intent i = new Intent(SurveyActivity.this, MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
