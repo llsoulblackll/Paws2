@@ -30,8 +30,8 @@ public final class Util {
 
     public static final String LOGGED_OWNER_KEY = "LoggedOwner";
 
-    //public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
-    public static final String URL = "http://192.168.1.48:60602/Service";
+    public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
+    //public static final String URL = "http://192.168.1.48:60602/Service";
     public static final String RESPONSE = "Response";
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String RESPONSE_MESSAGE = "ResponseMessage";

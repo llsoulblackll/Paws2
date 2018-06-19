@@ -9,9 +9,17 @@ import android.widget.ListView;
 
 import com.app.pawapp.Adapters.ListPetsAdapter;
 import com.app.pawapp.Classes.Pets;
+import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
+import com.app.pawapp.DataAccess.DataAccessObject.PetDao;
+import com.app.pawapp.DataAccess.DataAccessObject.Ws;
+import com.app.pawapp.DataAccess.Entity.Owner;
+import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
+import com.app.pawapp.Util.Util;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GeneralPetsFragment extends Fragment {
 
@@ -19,6 +27,9 @@ public class GeneralPetsFragment extends Fragment {
     private ListPetsAdapter adapter;
 
     private View layout;
+
+    private PetDao petDao;
+    private Owner loggedOwner;
 
     public GeneralPetsFragment() {}
 
@@ -29,24 +40,26 @@ public class GeneralPetsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        petDao = DaoFactory.getPetDao(getContext());
+        loggedOwner = new Gson().fromJson(Util.SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, getContext()).toString(), Owner.class);
+
         layout = inflater.inflate(R.layout.fragment_generalpets, container, false);
         listView = layout.findViewById(R.id.GeneralList);
 
-        adapter = new ListPetsAdapter(getContext(), GetArrayItems());
-        listView.setAdapter(adapter);
+        GetArrayItems(listView);
 
         return layout;
     }
 
-    private ArrayList<Pets> GetArrayItems() {
-
-        ArrayList<Pets> list = new ArrayList<>();
-        list.add(new Pets(R.drawable.puppy, "Coco", "3 meses", "Color marrón claro. Juguetón.",
-                "Perro", "Golden Retriever"));
-        list.add(new Pets(R.drawable.puppy, "Firulais", "5 meses", "Color marrón claro. Juguetón.",
-                "Perro", "Golden Retriever"));
-        return list;
-
+    private void GetArrayItems(ListView toPopulate) {
+        petDao.findAll(loggedOwner.getId(), new Ws.WsCallback<List<Pet>>() {
+            @Override
+            public void execute(List<Pet> response) {
+                if(response != null)
+                    listView.setAdapter(new ListPetsAdapter(getContext(), response));
+            }
+        });
     }
 
 }
