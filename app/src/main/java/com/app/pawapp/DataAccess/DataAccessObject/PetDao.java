@@ -7,7 +7,9 @@ import com.app.pawapp.Util.Gson.GsonFactory;
 import com.app.pawapp.Util.Util;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PetDao implements Ws<Pet>{
 
@@ -64,6 +66,23 @@ public class PetDao implements Ws<Pet>{
 
     @Override
     public void findAll(WsCallback<List<Pet>> onResult) {
+        throw new RuntimeException("This method requires an id, called the overloaded one instead");
+    }
 
+    public void findAll(int ownerId, final WsCallback<List<Pet>> onResult){
+        Util.HttpHelper.makeRequest(
+                String.format(Locale.getDefault(),"%s/%s/%s/%d", Util.URL, ENDPOINT, FIND_ALL_METHOD, ownerId),
+                Util.HttpHelper.GET,
+                null,
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        if(response != null){
+                            WCFResponse<List<Pet>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, Pet.class)));
+                            onResult.execute(pets.getResponse());
+                        }
+                        onResult.execute(null);
+                    }
+                });
     }
 }

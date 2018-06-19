@@ -9,15 +9,25 @@ import android.widget.ListView;
 
 import com.app.pawapp.Adapters.ListPetsAdapter;
 import com.app.pawapp.Classes.Pets;
+import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
+import com.app.pawapp.DataAccess.DataAccessObject.PetDao;
+import com.app.pawapp.DataAccess.DataAccessObject.Ws;
+import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
+import com.app.pawapp.Util.Util;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class    MyPetsFragment extends Fragment {
 
     private ListView listView;
     private ListPetsAdapter adapter;
+
+    private PetDao petDao;
+    private Owner loggedOwner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,28 +37,26 @@ public class    MyPetsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        petDao = DaoFactory.getPetDao(getContext());
+        loggedOwner = new Gson().fromJson(Util.SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, getContext()).toString(), Owner.class);
+
         View v = inflater.inflate(R.layout.fragment_mypets, container, false);
 
         listView = v.findViewById(R.id.MyPetsList);
-        adapter = new ListPetsAdapter(getContext(), GetArrayItems());
-        listView.setAdapter(adapter);
+
+        GetArrayItems(listView);
 
         return v;
     }
 
-    private ArrayList<Pets> GetArrayItems() {
-
-        ArrayList<Pets> list = new ArrayList<>();
-        list.add(new Pets(R.drawable.puppy, "Coco", "3 meses", "Color marrón claro. Juguetón.",
-                "Perro", "Golden Retriever"));
-        list.add(new Pets(R.drawable.puppy, "Firulais", "5 meses", "Color marrón claro. Juguetón.",
-                "Perro", "Golden Retriever"));
-        list.add(new Pets(R.drawable.puppy, "Firulais", "5 meses", "Color marrón claro. Juguetón.",
-                "Perro", "Golden Retriever"));
-        list.add(new Pets(R.drawable.puppy, "Firulais", "5 meses", "Color marrón claro. Juguetón.",
-                "Perro", "Golden Retriever"));
-        return list;
-
+    private void GetArrayItems(ListView toPopulate) {
+        petDao.findAll(loggedOwner.getId(), new Ws.WsCallback<List<Pet>>() {
+            @Override
+            public void execute(List<Pet> response) {
+                if(response != null)
+                    listView.setAdapter(new ListPetsAdapter(getContext(), response));
+            }
+        });
     }
 
 }

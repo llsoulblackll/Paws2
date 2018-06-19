@@ -1,5 +1,6 @@
 package com.app.pawapp.Fragments;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -20,8 +22,11 @@ import com.app.pawapp.R;
 import com.app.pawapp.Util.Util;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -88,11 +93,13 @@ public class ProfileFragment extends Fragment {
 
                 loggedOwner.setName(etName.getText().toString());
                 loggedOwner.setLastName(etLastName.getText().toString());
+
                 try {
-                    loggedOwner.setBirthDate(new SimpleDateFormat().parse(etBirth.getText().toString()));
+                    loggedOwner.setBirthDate(new SimpleDateFormat("dd-MM-yy").parse(etBirth.getText().toString()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
                 loggedOwner.setDNI(etDni.getText().toString());
                 loggedOwner.seteMail(etEmail.getText().toString());
                 loggedOwner.setAddress(etAddress.getText().toString());
@@ -111,6 +118,27 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        etBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar calendar = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        String dateString = String.format(Locale.getDefault(), "%d-%d-%d", datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear());
+                        try {
+                            loggedOwner.setBirthDate(DateFormat.getDateInstance().parse(dateString));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        etBirth.setText(dateString);
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+                datePickerDialog.show();
+            }
+        });
+
         return v;
     }
 
@@ -125,8 +153,9 @@ public class ProfileFragment extends Fragment {
         txtDni.setText(loggedOwner.getDNI());
         etDni.setText(loggedOwner.getDNI());
 
-        txtBirth.setText(loggedOwner.getBirthDate().toString());
-        etBirth.setText(loggedOwner.getBirthDate().toString());
+        Format f = new SimpleDateFormat("dd-MM-yy");
+        txtBirth.setText(f.format(loggedOwner.getBirthDate()));
+        etBirth.setText(f.format(loggedOwner.getBirthDate()));
 
         txtEmail.setText(loggedOwner.geteMail());
         etEmail.setText(loggedOwner.geteMail());

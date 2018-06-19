@@ -226,7 +226,9 @@
                     android:layout_marginLeft="20dp"
                     android:hint="Fecha de Nacimiento"
                     android:textSize="13dp"
-                    android:visibility="gone" />
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
@@ -333,7 +335,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_home_black" />
+                    android:src="@android:drawable/ic_dialog_map" />
 
                 <TextView
                     android:id="@+id/txtDistrict"

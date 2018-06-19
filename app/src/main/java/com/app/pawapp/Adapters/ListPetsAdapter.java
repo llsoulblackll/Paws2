@@ -17,15 +17,17 @@ import com.app.pawapp.Classes.Pets;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
 import com.app.pawapp.TabsFragments.MyPetsFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListPetsAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Pets> listpets;
+    private List<Pet> listpets;
 
-    public ListPetsAdapter(Context context, ArrayList<Pets> listpets) {
+    public ListPetsAdapter(Context context, List<Pet> listpets) {
         this.context = context;
         this.listpets = listpets;
     }
@@ -48,7 +50,7 @@ public class ListPetsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        Pets item = (Pets) getItem(position);
+        Pet item = (Pet) getItem(position);
 
         view = LayoutInflater.from(context).inflate(R.layout.item_pets, null);
         ImageView img = view.findViewById(R.id.PetImg);
@@ -58,12 +60,15 @@ public class ListPetsAdapter extends BaseAdapter {
         TextView type = view.findViewById(R.id.PetType);
         TextView race = view.findViewById(R.id.PetRace);
 
-        img.setImageResource(item.getImg());
+        if(item.getPicture() != null && !item.getPicture().isEmpty())
+            Picasso.get().load(item.getPicture()).into(img);
+        else
+            img.setImageResource(R.drawable.puppy);
         name.setText(item.getName());
         age.setText(item.getAge());
         des.setText(item.getDescription());
-        type.setText(item.getType());
-        race.setText(item.getRace());
+        type.setText(""+item.getSpecieId());
+        race.setText(""+item.getRaceId());
 
         return view;
     }
