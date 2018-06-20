@@ -79,9 +79,6 @@ public class PetFragment extends Fragment {
         petImageView = v.findViewById(R.id.imgPet);
         petImageButton = v.findViewById(R.id.btnPetImage);
 
-        //String[] types = {"Perro","Gato"};
-        //String[] races = {"Pastor Alemán","Siamés"};
-
         mbSpinnerType = v.findViewById(R.id.spnTypes);
         mbSpinnerRace = v.findViewById(R.id.spnRaces);
 
@@ -121,7 +118,7 @@ public class PetFragment extends Fragment {
         petImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent i = new Intent(Intent.ACTION_PICK);
                 i.setType("image/*");
                 startActivityForResult(i, PICK_IMAGE_CODE);
             }
@@ -164,7 +161,8 @@ public class PetFragment extends Fragment {
                     String ext = getContext().getContentResolver().getType(data.getData());
                     selectedImg = img;
                     selectedImgExtension = ext.substring(ext.indexOf("/") + 1);
-                    Picasso.get().load(data.getData()).into(petImageView);
+                    //load image with a placeholder for how long it takes
+                    Picasso.get().load(data.getData()).placeholder(R.drawable.progress_circle_anim).into(petImageView);
                 }
             } catch (IOException | NullPointerException e) {
                 Util.showAlert("Hubo un error al seleccionar la imagen", getContext());
