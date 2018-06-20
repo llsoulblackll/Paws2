@@ -65,8 +65,20 @@ public class PetDao implements Ws<Pet>{
     }
 
     @Override
-    public void findAll(WsCallback<List<Pet>> onResult) {
-        throw new RuntimeException("This method requires an id, called the overloaded one instead");
+    public void findAll(final WsCallback<List<Pet>> onResult) {
+        Util.HttpHelper.makeRequest(String.format("%s/%s/%s", Util.URL, ENDPOINT, FIND_ALL_METHOD),
+                Util.HttpHelper.GET,
+                null,
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        if(response != null) {
+                            WCFResponse<List<Pet>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, Pet.class)));
+                            onResult.execute(pets.getResponse());
+                        }
+                        onResult.execute(null);
+                    }
+                });
     }
 
     public void findAll(int ownerId, final WsCallback<List<Pet>> onResult){

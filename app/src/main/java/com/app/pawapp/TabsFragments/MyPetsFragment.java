@@ -38,7 +38,7 @@ public class    MyPetsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         petDao = DaoFactory.getPetDao(getContext());
-        loggedOwner = new Gson().fromJson(Util.SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, getContext()).toString(), Owner.class);
+        loggedOwner = Util.getLoggedOwner(getContext());
 
         View v = inflater.inflate(R.layout.fragment_mypets, container, false);
 

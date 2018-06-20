@@ -61,7 +61,7 @@ public class ListPetsAdapter extends BaseAdapter {
         TextView race = view.findViewById(R.id.PetRace);
 
         if(item.getPicture() != null && !item.getPicture().isEmpty())
-            Picasso.get().load(item.getPicture()).into(img);
+            Picasso.get().load(item.getPicture()).placeholder(R.drawable.progress_circle_anim).into(img);
         else
             img.setImageResource(R.drawable.puppy);
         name.setText(item.getName());

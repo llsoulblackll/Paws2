@@ -42,7 +42,7 @@ public class GeneralPetsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         petDao = DaoFactory.getPetDao(getContext());
-        loggedOwner = new Gson().fromJson(Util.SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, getContext()).toString(), Owner.class);
+        loggedOwner = Util.getLoggedOwner(getContext());
 
         layout = inflater.inflate(R.layout.fragment_generalpets, container, false);
         listView = layout.findViewById(R.id.GeneralList);
@@ -53,7 +53,7 @@ public class GeneralPetsFragment extends Fragment {
     }
 
     private void GetArrayItems(ListView toPopulate) {
-        petDao.findAll(loggedOwner.getId(), new Ws.WsCallback<List<Pet>>() {
+        petDao.findAll(new Ws.WsCallback<List<Pet>>() {
             @Override
             public void execute(List<Pet> response) {
                 if(response != null)

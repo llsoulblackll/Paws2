@@ -13,6 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
+
+import com.app.pawapp.DataAccess.Entity.Owner;
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -58,9 +62,22 @@ public final class Util {
         };
     }
 
+    public static Owner getLoggedOwner(Context context){
+        return new Gson().fromJson(SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, context).toString(), Owner.class);
+    }
+
     public static void showAlert(String msg, Context context){
         new AlertDialog.Builder(context)
                 .setTitle("Aviso")
+                .setMessage(msg)
+                .setNeutralButton("OK", null)
+                .create()
+                .show();
+    }
+
+    public static void showAlert(String msg, String title, Context context){
+        new AlertDialog.Builder(context)
+                .setTitle(title)
                 .setMessage(msg)
                 .setNeutralButton("OK", null)
                 .create()
@@ -96,6 +113,8 @@ public final class Util {
 
     public static class PermissionHelper {
 
+        private PermissionHelper(){}
+
         public static boolean checkPermission(String permission, Context context) {
             return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
         }
@@ -108,6 +127,8 @@ public final class Util {
     }
 
     public static class HttpHelper {
+
+        private HttpHelper(){}
 
         public static final String GET = "GET";
         public static final String POST = "POST";
@@ -208,6 +229,9 @@ public final class Util {
     }
 
     public static final class SharedPreferencesHelper {
+
+        private SharedPreferencesHelper(){}
+
         //GENERICS FOR STATIC METHODS NEED THEIR OWN GENERIC SIGNATURE
         public static Object getValue(String key, Context context) {
             return PreferenceManager.getDefaultSharedPreferences(context).getAll().get(key);
@@ -239,12 +263,12 @@ public final class Util {
 
     public static final class FragmentHelper {
 
+        private FragmentHelper(){}
+
         public static void navigate(Class<? extends Fragment> fragmentClass, int containerResource, String tag, FragmentManager fragmentManager) {
             Fragment frag = fragmentManager.findFragmentByTag(tag);
             if (frag != null) {
-                if (frag.isVisible())
-                    return;
-                else {
+                if (!frag.isVisible()) {
                     for (Fragment f : fragmentManager.getFragments()) {
                         if (f.isVisible()) {
                             fragmentManager.beginTransaction()
