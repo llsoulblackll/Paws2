@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.OwnerDao;
@@ -20,6 +21,7 @@ import com.app.pawapp.DataAccess.DataAccessObject.SurveyDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.DataAccess.Entity.Survey;
+import com.app.pawapp.Login.LoginActivity;
 import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Register.RegisterActivity;
@@ -129,10 +131,11 @@ public class SurveyActivity extends AppCompatActivity {
                     @Override
                     public void execute(Object response) {
                         progressDialog.dismiss();
-                        Util.SharedPreferencesHelper.setValue(Util.LOGGED_OWNER_KEY, new Gson().toJson(ownerToInsert), SurveyActivity.this);
-                        Intent i = new Intent(SurveyActivity.this, MainActivity.class);
+                        //Util.SharedPreferencesHelper.setValue(Util.LOGGED_OWNER_KEY, new Gson().toJson(ownerToInsert), SurveyActivity.this);
+                        Intent i = new Intent(SurveyActivity.this, LoginActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(i);
+                        Toast.makeText(SurveyActivity.this, "Registrado Satisfactoriamente", Toast.LENGTH_LONG).show();
                     }
                 });
             }

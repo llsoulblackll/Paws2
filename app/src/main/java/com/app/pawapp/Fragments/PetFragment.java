@@ -44,6 +44,7 @@ public class PetFragment extends Fragment {
     private TextInputEditText nameTextInputEditText;
     private TextInputEditText ageTextInputEditText;
     private TextInputEditText descTextInputEditText;
+    private TextInputEditText raceTextInputEditText;
     private ImageView petImageView;
     private Button petImageButton;
     private MaterialBetterSpinner mbSpinnerType;
@@ -76,6 +77,7 @@ public class PetFragment extends Fragment {
         nameTextInputEditText = v.findViewById(R.id.PetName);
         ageTextInputEditText = v.findViewById(R.id.PetAge);
         descTextInputEditText = v.findViewById(R.id.PetDes);
+        raceTextInputEditText = v.findViewById(R.id.etPetRace);
         petImageView = v.findViewById(R.id.imgPet);
         petImageButton = v.findViewById(R.id.btnPetImage);
 
@@ -90,12 +92,15 @@ public class PetFragment extends Fragment {
 
                 for (int i = 0; i < response.size(); i++){
                     ss[i] = species.get(i).getName();
+                    System.out.println(species.get(i).getName());
                 }
 
                 if(ss.length > 0) {
                     ArrayAdapter<String> arrayAdapterType = new ArrayAdapter<>(PetFragment.this.getActivity(),
                             android.R.layout.simple_spinner_dropdown_item, ss);
                     arrayAdapterType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+
+                    //mbSpinnerType.setFocusable(true);
                     mbSpinnerType.setAdapter(arrayAdapterType);
 
                     mbSpinnerType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -133,8 +138,9 @@ public class PetFragment extends Fragment {
                 pet.setAge(ageTextInputEditText.getText().toString());
                 pet.setDescription(descTextInputEditText.getText().toString());
                 pet.setSpecieId(selectedSpecie != null ? selectedSpecie.getId() : 0);
+                //TODO: ADD RACE COLUMN TO TABLE FOR OTHERS
                 pet.setRaceId(selectedRace != null ? selectedRace.getId() : 0);
-                pet.setOwnerId(new Gson().fromJson(Util.SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, getContext()).toString(), Owner.class).getId());
+                pet.setOwnerId(Util.getLoggedOwner(getContext()).getId());
 
                 pet.setImageBase64(Util.toBase64(Util.bitmapToBytes(selectedImg, selectedImgExtension)));
                 pet.setImageExtension(selectedImgExtension);
@@ -171,6 +177,9 @@ public class PetFragment extends Fragment {
     }
 
     private void fillRaces(int specieId){
+
+        //mbSpinnerRace.setFocusable(false);
+
         raceDao.findAll(specieId, new Ws.WsCallback<List<Race>>() {
             @Override
             public void execute(List<Race> response) {
@@ -183,8 +192,14 @@ public class PetFragment extends Fragment {
                 }
 
                 if(rr.length > 0) {
+                    //IF THERE ARE RACES AVAILABLE THEN
+                    mbSpinnerRace.setVisibility(View.VISIBLE);
+                    raceTextInputEditText.setVisibility(View.GONE);
+
                     ArrayAdapter<String> arrayAdapterRaces = new ArrayAdapter<>(PetFragment.this.getActivity(),
                             android.R.layout.simple_spinner_dropdown_item, rr);
+
+                    //mbSpinnerRace.setFocusable(true);
                     mbSpinnerRace.setAdapter(arrayAdapterRaces);
                     arrayAdapterRaces.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
@@ -198,15 +213,14 @@ public class PetFragment extends Fragment {
                     selectedRace = races.get(0);
                     mbSpinnerRace.setText(selectedRace.getName());
 
-                    if(!mbSpinnerRace.isEnabled()) {
+                    /*if(!mbSpinnerRace.isEnabled()) {
                         mbSpinnerRace.setClickable(true);
                         mbSpinnerRace.setEnabled(true);
-                    }
+                    }*/
 
                 } else {
-                    mbSpinnerRace.setClickable(false);
-                    mbSpinnerRace.setEnabled(false);
-                    mbSpinnerRace.setText("");
+                    mbSpinnerRace.setVisibility(View.GONE);
+                    raceTextInputEditText.setVisibility(View.VISIBLE);
                     selectedRace = null;
                 }
             }
@@ -217,6 +231,7 @@ public class PetFragment extends Fragment {
         nameTextInputEditText.setText("");
         ageTextInputEditText.setText("");
         descTextInputEditText.setText("");
+        raceTextInputEditText.setText("");
         petImageView.setImageResource(R.drawable.dog);
         selectedSpecie = species.get(0);
         selectedRace = races.size() > 0 ? races.get(0) : null;

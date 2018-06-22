@@ -12,6 +12,7 @@ import com.app.pawapp.Classes.Pets;
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.PetDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
+import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
@@ -27,7 +28,7 @@ public class    MyPetsFragment extends Fragment {
     private ListPetsAdapter adapter;
 
     private PetDao petDao;
-    private Owner loggedOwner;
+    private OwnerDto loggedOwner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

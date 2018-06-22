@@ -72,11 +72,12 @@ public class PetDao implements Ws<Pet>{
                 new Util.HttpHelper.OnResult() {
                     @Override
                     public void execute(Object response) {
+                        List<Pet> lPets = null;
                         if(response != null) {
                             WCFResponse<List<Pet>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, Pet.class)));
-                            onResult.execute(pets.getResponse());
+                            lPets = pets.getResponse();
                         }
-                        onResult.execute(null);
+                        onResult.execute(lPets);
                     }
                 });
     }
@@ -89,11 +90,12 @@ public class PetDao implements Ws<Pet>{
                 new Util.HttpHelper.OnResult() {
                     @Override
                     public void execute(Object response) {
+                        List<Pet> lPets = null;
                         if(response != null){
                             WCFResponse<List<Pet>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, Pet.class)));
-                            onResult.execute(pets.getResponse());
+                            lPets = pets.getResponse();
                         }
-                        onResult.execute(null);
+                        onResult.execute(lPets);
                     }
                 });
     }
