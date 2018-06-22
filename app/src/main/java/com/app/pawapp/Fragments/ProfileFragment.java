@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.OwnerDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
+import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
@@ -32,12 +33,11 @@ import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
-    TextView txtName,txtLastName,txtDni,txtBirth,txtEmail,txtPhone,txtAddress,txtDistrict;
+    TextView txtName,txtLastName,txtDni,txtBirth,txtEmail,txtPhone,txtAddress,txtDistrict, txtRegisteredPets, txtAdoptedPets;
     EditText etName,etLastName,etDni,etBirth,etEmail,etPhone,etAddress,etDistrict;
     FloatingActionButton fabEdit,fabSave;
 
-    private Gson gson;
-    private Owner loggedOwner;
+    private OwnerDto loggedOwner;
 
     public ProfileFragment() {}
 
@@ -60,6 +60,8 @@ public class ProfileFragment extends Fragment {
         txtPhone = v.findViewById(R.id.txtPhone);
         txtAddress = v.findViewById(R.id.txtAddress);
         txtDistrict = v.findViewById(R.id.txtDistrict);
+        txtRegisteredPets = v.findViewById(R.id.txtRegisteredPets);
+        txtAdoptedPets = v.findViewById(R.id.txtAdoptedPets);
 
         etName = v.findViewById(R.id.etName);
         etLastName= v.findViewById(R.id.etLastName);
@@ -73,8 +75,10 @@ public class ProfileFragment extends Fragment {
         fabEdit = v.findViewById(R.id.fabEdit);
         fabSave = v.findViewById(R.id.fabSave);
 
-        gson = new Gson();
-        loggedOwner = gson.fromJson(Util.SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, getContext()).toString(), Owner.class);
+        loggedOwner = Util.getLoggedOwner(getContext());
+
+        txtRegisteredPets.setText(String.valueOf(loggedOwner.getRegisteredAmount()));
+        txtAdoptedPets.setText(String.valueOf(loggedOwner.getAdoptedAmount()));
 
         switchViews(false);
 
@@ -88,29 +92,39 @@ public class ProfileFragment extends Fragment {
         v.findViewById(R.id.fabSave).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                loggedOwner = new Owner();
-
                 loggedOwner.setName(etName.getText().toString());
                 loggedOwner.setLastName(etLastName.getText().toString());
-
                 try {
-                    loggedOwner.setBirthDate(new SimpleDateFormat("dd-MM-yy").parse(etBirth.getText().toString()));
+                    loggedOwner.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse(etBirth.getText().toString()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
                 loggedOwner.setDNI(etDni.getText().toString());
                 loggedOwner.seteMail(etEmail.getText().toString());
                 loggedOwner.setAddress(etAddress.getText().toString());
                 loggedOwner.setPhoneNumber(etPhone.getText().toString());
-                loggedOwner.setDistrictId(Integer.parseInt(etDistrict.getText().toString()));
+                //loggedOwner.setDistrict(Integer.parseInt(etDistrict.getText().toString()));
 
-                ownerDao.update(loggedOwner, new Ws.WsCallback<Boolean>() {
+                Owner o = new Owner(
+                        loggedOwner.getId(),
+                        loggedOwner.getUsername(),
+                        loggedOwner.getPassword(),
+                        loggedOwner.getName(),
+                        loggedOwner.getLastName(),
+                        loggedOwner.getBirthDate(),
+                        loggedOwner.getDNI(),
+                        loggedOwner.geteMail(),
+                        loggedOwner.getAddress(),
+                        loggedOwner.getPhoneNumber(),
+                        loggedOwner.getProfilePicture(),
+                        loggedOwner.getDistrict().getId()
+                );
+
+                ownerDao.update(o, new Ws.WsCallback<Boolean>() {
                     @Override
                     public void execute(Boolean response) {
                         if(response)
-                            Util.SharedPreferencesHelper.setValue(Util.LOGGED_OWNER_KEY, gson.toJson(loggedOwner), getContext());
+                            Util.setLoggedOwner(loggedOwner, getContext());
                         switchViews(false);
                     }
                 });
@@ -125,12 +139,8 @@ public class ProfileFragment extends Fragment {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        String dateString = String.format(Locale.getDefault(), "%d-%d-%d", datePicker.getDayOfMonth(), datePicker.getMonth(), datePicker.getYear());
-                        try {
-                            loggedOwner.setBirthDate(DateFormat.getDateInstance().parse(dateString));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                        String dateString = String.format(Locale.getDefault(), "%d/%s/%d", datePicker.getDayOfMonth(),
+                                datePicker.getMonth() + 1 < 10 ? "0" + (datePicker.getMonth() + 1) : datePicker.getMonth() + 1, datePicker.getYear());
                         etBirth.setText(dateString);
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -142,7 +152,7 @@ public class ProfileFragment extends Fragment {
         return v;
     }
 
-    void switchViews(boolean edit){
+    private void switchViews(boolean edit){
 
         txtName.setText(loggedOwner.getName());
         etName.setText(loggedOwner.getName());
@@ -153,7 +163,7 @@ public class ProfileFragment extends Fragment {
         txtDni.setText(loggedOwner.getDNI());
         etDni.setText(loggedOwner.getDNI());
 
-        Format f = new SimpleDateFormat("dd-MM-yy");
+        Format f = new SimpleDateFormat("dd/MM/yyyy");
         txtBirth.setText(f.format(loggedOwner.getBirthDate()));
         etBirth.setText(f.format(loggedOwner.getBirthDate()));
 
@@ -166,8 +176,8 @@ public class ProfileFragment extends Fragment {
         txtAddress.setText(loggedOwner.getAddress());
         etAddress.setText(loggedOwner.getAddress());
 
-        txtDistrict.setText(String.valueOf(loggedOwner.getDistrictId()));
-        etDistrict.setText(String.valueOf(loggedOwner.getDistrictId()));
+        txtDistrict.setText(loggedOwner.getDistrict().getName());
+        etDistrict.setText(loggedOwner.getDistrict().getName());
 
         if(edit){
             fabEdit.setVisibility(View.GONE);

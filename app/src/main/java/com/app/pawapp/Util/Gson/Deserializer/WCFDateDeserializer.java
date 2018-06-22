@@ -12,6 +12,12 @@ public class WCFDateDeserializer implements JsonDeserializer<Date> {
 
     @Override
     public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        return new Date(json.getAsJsonPrimitive().getAsLong());
+        String d = json.getAsJsonPrimitive().getAsString();
+        if(d.indexOf('-') > -1)
+            return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf('-'))));
+        else if(d.indexOf('+') > -1)
+            return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf('+'))));
+        else
+            return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf(')'))));
     }
 }

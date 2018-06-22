@@ -2,6 +2,7 @@ package com.app.pawapp.DataAccess.DataAccessObject;
 
 import android.content.Context;
 
+import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.Util.Gson.GsonFactory;
 import com.app.pawapp.Util.Util;
@@ -30,6 +31,7 @@ public class OwnerDao implements Ws<Owner> {
     private static final String FIND_METHOD = "Find";
     private static final String FIND_ALL_METHOD = "FindAll";
     private static final String LOGIN_METHOD = "Login";
+    private static final String FULL_LOGIN_METHOD = "FullLogin";
 
     private static final String ID = "Id";
     private static final String USERNAME = "Username";
@@ -192,6 +194,24 @@ public class OwnerDao implements Ws<Owner> {
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
+                    }
+                });
+    }
+
+    public void fullLogin(Owner owner, final WsCallback<OwnerDto> onResult){
+        Util.HttpHelper.makeRequest(
+                String.format("%s/%s/%s", URL, ENDPOINT, FULL_LOGIN_METHOD),
+                Util.HttpHelper.POST,
+                gson.toJson(owner),
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        OwnerDto o = null;
+                        if(response != null){
+                            WCFResponse<OwnerDto> res = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, OwnerDto.class));
+                            o = res.getResponse();
+                        }
+                        onResult.execute(o);
                     }
                 });
     }

@@ -1,8 +1,11 @@
 package com.app.pawapp.DataAccess.Entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Pet {
+public class Pet implements Parcelable {
 
     @SerializedName("Id") private int id;
     @SerializedName("Name") private String name;
@@ -29,6 +32,31 @@ public class Pet {
         this.raceId = raceId;
         this.ownerId = ownerId;
     }
+
+    private Pet(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        age = in.readString();
+        description = in.readString();
+        picture = in.readString();
+        specieId = in.readInt();
+        raceId = in.readInt();
+        ownerId = in.readInt();
+        imageBase64 = in.readString();
+        imageExtension = in.readString();
+    }
+
+    public static final Creator<Pet> CREATOR = new Creator<Pet>() {
+        @Override
+        public Pet createFromParcel(Parcel in) {
+            return new Pet(in);
+        }
+
+        @Override
+        public Pet[] newArray(int size) {
+            return new Pet[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -108,5 +136,24 @@ public class Pet {
 
     public void setImageExtension(String imageExtension) {
         this.imageExtension = imageExtension;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(name);
+        parcel.writeString(age);
+        parcel.writeString(description);
+        parcel.writeString(picture);
+        parcel.writeInt(specieId);
+        parcel.writeInt(raceId);
+        parcel.writeInt(ownerId);
+        parcel.writeString(imageBase64);
+        parcel.writeString(imageExtension);
     }
 }

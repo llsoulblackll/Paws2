@@ -19,6 +19,7 @@ import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.DistrictDao;
 import com.app.pawapp.DataAccess.DataAccessObject.OwnerDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
+import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.District;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.MainActivity;
@@ -81,15 +82,18 @@ public class LoginActivity extends AppCompatActivity {
     private void Validate() {
         final ProgressDialog pd = ProgressDialog.show(this, "Iniciando sesion", "Espere porfavor");
 
-        ownerDao.login(userEditText.getText().toString(), passEditText.getText().toString(), new Ws.WsCallback<Owner>() {
+        Owner o = new Owner();
+        o.setUsername(userEditText.getText().toString());
+        o.setPassword(passEditText.getText().toString());
+        ownerDao.fullLogin(o, new Ws.WsCallback<OwnerDto>() {
 
             @Override
-            public void execute(Owner response) {
+            public void execute(OwnerDto response) {
                 if(response != null) {
                     pd.dismiss();
 
                     //save user current user
-                    Util.SharedPreferencesHelper.setValue(Util.LOGGED_OWNER_KEY, new Gson().toJson(response), LoginActivity.this);
+                    Util.setLoggedOwner(response, LoginActivity.this);
 
                     Intent i = new Intent(LoginActivity.this, MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

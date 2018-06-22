@@ -14,7 +14,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 
+import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
+import com.app.pawapp.Util.Gson.GsonFactory;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -62,8 +64,12 @@ public final class Util {
         };
     }
 
-    public static Owner getLoggedOwner(Context context){
-        return new Gson().fromJson(SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, context).toString(), Owner.class);
+    public static OwnerDto getLoggedOwner(Context context){
+        return GsonFactory.getWCFGson().fromJson(SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, context).toString(), OwnerDto.class);
+    }
+
+    public static boolean setLoggedOwner(OwnerDto owner, Context context){
+        return SharedPreferencesHelper.setValue(LOGGED_OWNER_KEY, GsonFactory.getWCFGson().toJson(owner), context);
     }
 
     public static void showAlert(String msg, Context context){
@@ -194,6 +200,12 @@ public final class Util {
                         }
                     } catch (IOException ex) {
                         //throw new RuntimeException(ex);
+                        try {
+                            System.out.println(urlConnection.getResponseCode());
+                            System.out.println(urlConnection.getResponseMessage());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         ex.printStackTrace();
                         return null;
                     }
