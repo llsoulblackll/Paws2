@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +9,7 @@
     android:padding="15dp"
     android:focusable="false"
     android:focusableInTouchMode="true"
+    android:background="@color/White"
     tools:context=".Login.LoginActivity">
 
     <ImageView
@@ -51,8 +51,8 @@
         android:onClick="Login"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/buttonColor"
-        android:textColor="@color/textColor"
+        android:backgroundTint="@color/DeepKoamaru"
+        android:textColor="@color/White"
         android:text="@string/loginbutton"/>
 
     <Button
@@ -60,8 +60,8 @@
         android:onClick="Register"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/buttonColor"
-        android:textColor="@color/textColor"
+        android:backgroundTint="@color/DeepKoamaru"
+        android:textColor="@color/White"
         android:text="@string/registerbutton"/>
 
 </LinearLayout>

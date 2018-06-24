@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">PawApp</string>
 
-    <string name="contentdes">pet_icon</string>
+    <string name="contentdes">Img</string>
 
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
@@ -37,5 +37,6 @@
 
     <string name="USER_ERROR">Usuario Inválido</string>
     <string name="PASS_ERROR">Contraseña Inválida</string>
+    <string name="logout">Cerrar Sesión</string>
 
 </resources>

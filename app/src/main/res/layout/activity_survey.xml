@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbars = "vertical"
     android:scrollbarStyle="insideInset"
+    android:background="@color/White"
     tools:context=".Survey.SurveyActivity">
 
     <LinearLayout
@@ -206,6 +206,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/regEnd"
+            android:backgroundTint="@color/DeepKoamaru"
             android:onClick="End"/>
 
     </LinearLayout>
