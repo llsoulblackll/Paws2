@@ -34,7 +34,8 @@ import java.util.Set;
 
 public final class Util {
 
-    public static final String LOGGED_OWNER_KEY = "LoggedOwner";
+    private static final String LOGGED_OWNER_KEY = "LoggedOwner";
+    private static final String TOKEN_KEY = "TokenKey";
 
     public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
     //public static final String URL = "http://192.168.1.48:60602/Service";
@@ -43,6 +44,18 @@ public final class Util {
     public static final String RESPONSE_MESSAGE = "ResponseMessage";
 
     private Util() {
+    }
+
+    public static boolean setToken(String token, Context context){
+        return SharedPreferencesHelper.setValue(TOKEN_KEY, token, context);
+    }
+
+    private static String getToken(Context context){
+        return SharedPreferencesHelper.getValue(TOKEN_KEY, context).toString();
+    }
+
+    public static String makeRequestUrl(String url, Context context){
+        return String.format("%s?token=%s", url, getToken(context));
     }
 
     public static Type getType(final Type rawType, final Type ... typesParams){
@@ -244,6 +257,7 @@ public final class Util {
 
         private SharedPreferencesHelper(){}
 
+        //TODO: MAKE METHOD GENERIC ACCEPTING TYPE ARGS
         //GENERICS FOR STATIC METHODS NEED THEIR OWN GENERIC SIGNATURE
         public static Object getValue(String key, Context context) {
             return PreferenceManager.getDefaultSharedPreferences(context).getAll().get(key);
