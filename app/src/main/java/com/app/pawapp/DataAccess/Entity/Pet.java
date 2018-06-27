@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Pet implements Parcelable {
 
     @SerializedName("Id") private int id;
@@ -12,6 +14,9 @@ public class Pet implements Parcelable {
     @SerializedName("Age") private String age;
     @SerializedName("Description") private String description;
     @SerializedName("Picture") private String picture;
+    @SerializedName("PublishDate") private Date publishDate;
+    @SerializedName("State") private boolean state;
+    @SerializedName("OtherRace") private String otherRace;
     @SerializedName("SpecieId") private int specieId;
     @SerializedName("RaceId") private int raceId;
     @SerializedName("OwnerId") private int ownerId;
@@ -22,15 +27,20 @@ public class Pet implements Parcelable {
     public Pet() {
     }
 
-    public Pet(int id, String name, String age, String description, String picture, int specieId, int raceId, int ownerId) {
+    public Pet(int id, String name, String age, String description, String picture, Date publishDate, boolean state, String otherRace, int specieId, int raceId, int ownerId, String imageBase64, String imageExtension) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.description = description;
         this.picture = picture;
+        this.publishDate = publishDate;
+        this.state = state;
+        this.otherRace = otherRace;
         this.specieId = specieId;
         this.raceId = raceId;
         this.ownerId = ownerId;
+        this.imageBase64 = imageBase64;
+        this.imageExtension = imageExtension;
     }
 
     private Pet(Parcel in) {
@@ -39,6 +49,9 @@ public class Pet implements Parcelable {
         age = in.readString();
         description = in.readString();
         picture = in.readString();
+        publishDate = new Date(in.readLong());
+        state = in.readByte() == 1;
+        otherRace = in.readString();
         specieId = in.readInt();
         raceId = in.readInt();
         ownerId = in.readInt();
@@ -98,6 +111,30 @@ public class Pet implements Parcelable {
         this.picture = picture;
     }
 
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public boolean isState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
+    }
+
+    public String getOtherRace() {
+        return otherRace;
+    }
+
+    public void setOtherRace(String otherRace) {
+        this.otherRace = otherRace;
+    }
+
     public int getSpecieId() {
         return specieId;
     }
@@ -150,6 +187,9 @@ public class Pet implements Parcelable {
         parcel.writeString(age);
         parcel.writeString(description);
         parcel.writeString(picture);
+        parcel.writeLong(publishDate.getTime());
+        parcel.writeByte((byte)(state ? 0 : 1));
+        parcel.writeString(otherRace);
         parcel.writeInt(specieId);
         parcel.writeInt(raceId);
         parcel.writeInt(ownerId);
