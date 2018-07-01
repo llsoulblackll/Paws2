@@ -16,13 +16,15 @@ import com.app.pawapp.Classes.Message;
 import com.app.pawapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MessageAdapter extends BaseAdapter {
-    protected Activity activity;
-    protected ArrayList<Message> msg;
 
-    public MessageAdapter(Activity activity, ArrayList<Message> msg) {
-        this.activity = activity;
+    private Context context;
+    private ArrayList<Message> msg;
+
+    public MessageAdapter(Context context, ArrayList<Message> msg) {
+        this.context = context;
         this.msg = msg;
     }
 
@@ -42,34 +44,24 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View contentView, ViewGroup parent) {
-        View vi=contentView;
+    public View getView(int position, View view, ViewGroup viewGroup) {
 
-        if(contentView == null) {
-            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = inflater.inflate(R.layout.item_message_list, null);
-        }
+        Message item = (Message) getItem(position);
 
-        Message item = msg.get(position);
+        view = LayoutInflater.from(context).inflate(R.layout.item_message_list, null);
 
-        ImageView image = vi.findViewById(R.id.imgAdopter);
-        image.setImageResource(item.getImg());
+        ImageView img = view.findViewById(R.id.imgAdopter);
+        TextView name = view.findViewById(R.id.txtNameAdopter);
+        TextView lastname = view.findViewById(R.id.txtLastNameAdopter);
+        TextView message = view.findViewById(R.id.txtMessage);
+        TextView time = view.findViewById(R.id.txtTime);
 
-        TextView name = vi.findViewById(R.id.txtNameAdopter);
+        img.setImageResource(item.getImg());
         name.setText(item.getName());
-
-        TextView lastname = vi.findViewById(R.id.txtLastNameAdopter);
         lastname.setText(item.getLastName());
-
-        TextView email = vi.findViewById(R.id.txtEmailAdopter);
-        email.setText(item.getEmail());
-
-        TextView phone = vi.findViewById(R.id.txtPhoneAdopter);
-        phone.setText(item.getPhone());
-
-        TextView time = vi.findViewById(R.id.txtTime);
+        message.setText(item.getMessage());
         time.setText(item.getTime());
 
-        return vi;
+        return view;
     }
 }

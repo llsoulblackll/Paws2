@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.app.pawapp.TabsFragments.GeneralPetsFragment">
+    android:background="@color/White"
+    tools:context=".InboxMessages.AnswerActivity">
 
     <ListView
-        android:id="@+id/GeneralList"
+        android:id="@+id/answer_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="70dp"
         android:divider="@color/White" />
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

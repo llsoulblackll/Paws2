@@ -22,7 +22,7 @@
     <string name="titlesurvey03">¿Tiene otra(s) mascota(s)?</string>
     <string name="titlesurvey04">¿De qué tipo es/son la(s) mascota(s)?</string>
     <string name="titlesurvey05">¿En qué modalidad trabaja?</string>
-    <string name="titlesurvey06">¿Tiene tiempo suficiente para cuidar de la(s) mascota(s)?</string>
+    <string name="titlesurvey06">¿Tiene tiempo para cuidar de la(s) mascota(s)?</string>
     <string name="regEnd">Finalizar</string>
 
     <string name="pets">Mascotas</string>
@@ -35,8 +35,18 @@
     <string name="petreg">Registrar Mascota</string>
     <string name="petimage">Subir Imagen</string>
 
-    <string name="USER_ERROR">Usuario Inválido</string>
-    <string name="PASS_ERROR">Contraseña Inválida</string>
+    <string name="USER_ERROR">Usuario inválido. Mín. 5 caracteres / Máx. 15 caracteres. No puede empezar con símbolo y/o números.</string>
+    <string name="PASS_ERROR">Contraseña inválida. Mín. 5 caracteres / Máx. 10 caracteres. No puede empezar con símbolo y/o números.</string>
+    <string name="NAME_ERROR">Ingrese su(s) nombre(s).</string>
+    <string name="LASTNAME_ERROR">Ingrese su(s) apellido(s).</string>
+
     <string name="logout">Cerrar Sesión</string>
+
+    <string name="accept">Aceptar</string>
+    <string name="refuse">Rechazar</string>
+
+    <string name="deletemsg">¿Eliminar Mascota?</string>
+    <string name="yes">Eliminar</string>
+    <string name="no">Cancelar</string>
 
 </resources>

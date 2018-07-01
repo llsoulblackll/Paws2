@@ -207,6 +207,7 @@
             android:layout_height="wrap_content"
             android:text="@string/regEnd"
             android:backgroundTint="@color/DeepKoamaru"
+            android:textColor="@color/White"
             android:onClick="End"/>
 
     </LinearLayout>

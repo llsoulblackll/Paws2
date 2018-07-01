@@ -20,7 +20,7 @@
             android:weightSum="2">
 
             <ImageView
-                android:id="@+id/imgAdopter"
+                android:id="@+id/imgOwner"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -41,7 +41,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/txtNameAdopter"
+                        android:id="@+id/txtNameOwner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="15dp"
@@ -49,7 +49,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtLastNameAdopter"
+                        android:id="@+id/txtLastNameOwner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingLeft="5dp"
@@ -60,7 +60,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtMessage"
+                    android:id="@+id/txtAnswer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

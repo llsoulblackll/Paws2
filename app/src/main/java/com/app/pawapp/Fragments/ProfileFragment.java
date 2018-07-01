@@ -20,6 +20,7 @@ import com.app.pawapp.DataAccess.DataAccessObject.OwnerDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
 import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
+import com.app.pawapp.InboxMessages.AnswerActivity;
 import com.app.pawapp.InboxMessages.InboxActivity;
 import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
@@ -38,7 +39,7 @@ public class ProfileFragment extends Fragment {
 
     TextView txtName,txtLastName,txtDni,txtBirth,txtEmail,txtPhone,txtAddress,txtDistrict, txtRegisteredPets, txtAdoptedPets;
     EditText etName,etLastName,etDni,etBirth,etEmail,etPhone,etAddress,etDistrict;
-    FloatingActionButton fabEdit,fabSave,fabInbox;
+    FloatingActionButton fabEdit,fabSave,fabInbox,fabPet;
 
     private OwnerDto loggedOwner;
 
@@ -78,6 +79,7 @@ public class ProfileFragment extends Fragment {
         fabEdit = v.findViewById(R.id.fabEdit);
         fabSave = v.findViewById(R.id.fabSave);
         fabInbox = v.findViewById(R.id.fabInbox);
+        fabPet = v.findViewById(R.id.fabPet);
 
         loggedOwner = Util.getLoggedOwner(getContext());
 
@@ -140,6 +142,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(), InboxActivity.class);
+                startActivity(i);
+            }
+        });
+
+        fabPet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), AnswerActivity.class);
                 startActivity(i);
             }
         });

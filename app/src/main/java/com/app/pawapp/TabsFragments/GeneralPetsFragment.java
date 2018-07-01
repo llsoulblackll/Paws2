@@ -12,18 +12,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.app.pawapp.Adapters.ListPetsAdapter;
-import com.app.pawapp.Classes.Pets;
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.PetDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
 import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
-import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
 import com.app.pawapp.Util.Util;
-import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GeneralPetsFragment extends Fragment {
@@ -59,22 +55,21 @@ public class GeneralPetsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
-                /*Toast.makeText(getActivity(), "Funciona!!!", Toast.LENGTH_SHORT).show();*/
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                 builder.setCancelable(true);
-                builder.setTitle("Selecciona una opción");
+                builder.setTitle("Eliga una opción");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             /*Envía aviso al otro usuario*/
-                            Toast.makeText(getActivity(), "Solicitud de Adopción Enviada", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Solicitud de Adopción Enviada Satisfactoriamente", Toast.LENGTH_SHORT).show();
                         } else if (which == 1) {
                             /*Muestra información del usuario de la mascota*/
                             /*Toast.makeText(getActivity(), "Información", Toast.LENGTH_SHORT).show();*/
                             AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                             LayoutInflater inflater = getActivity().getLayoutInflater();
-                            builder.setView(inflater.inflate(R.layout.activity_dialog, null));
+                            builder.setView(inflater.inflate(R.layout.activity_contact_dialog, null));
                             builder.show();
                         }
                     }
