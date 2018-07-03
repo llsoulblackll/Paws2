@@ -17,10 +17,10 @@ public class WCFDateDeserializer implements JsonDeserializer<Date> {
         String d = json.getAsJsonPrimitive().getAsString();
         System.out.println(d);
         if(d.indexOf('(') > -1 && d.indexOf(')') > -1) {
-            if (d.indexOf('-') > -1)
-                return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf('-'))));
+            if (d.indexOf('-') > -1 && d.lastIndexOf('-') > -1 && d.indexOf('-') != d.lastIndexOf('-'))
+                return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.lastIndexOf('-'))));
             else if (d.indexOf('+') > -1)
-                return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf('+'))));
+                return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.lastIndexOf('+'))));
             else
                 return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf(')'))));
         }
