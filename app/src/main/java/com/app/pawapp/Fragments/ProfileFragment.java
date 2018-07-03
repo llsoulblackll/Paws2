@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.InboxMessages.AnswerActivity;
 import com.app.pawapp.InboxMessages.InboxActivity;
+import com.app.pawapp.Login.LoginActivity;
 import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Util.Util;
@@ -37,9 +39,10 @@ import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
-    TextView txtName,txtLastName,txtDni,txtBirth,txtEmail,txtPhone,txtAddress,txtDistrict, txtRegisteredPets, txtAdoptedPets;
-    EditText etName,etLastName,etDni,etBirth,etEmail,etPhone,etAddress,etDistrict;
-    FloatingActionButton fabEdit,fabSave,fabInbox,fabPet;
+    private TextView txtName,txtLastName,txtDni,txtBirth,txtEmail,txtPhone,txtAddress,txtDistrict, txtRegisteredPets, txtAdoptedPets;
+    private EditText etName,etLastName,etDni,etBirth,etEmail,etPhone,etAddress,etDistrict;
+    private FloatingActionButton fabEdit,fabSave,fabInbox,fabPet;
+    private Button btnLogout;
 
     private OwnerDto loggedOwner;
 
@@ -80,6 +83,10 @@ public class ProfileFragment extends Fragment {
         fabSave = v.findViewById(R.id.fabSave);
         fabInbox = v.findViewById(R.id.fabInbox);
         fabPet = v.findViewById(R.id.fabPet);
+
+        btnLogout = v.findViewById(R.id.btnLogout);
+
+        btnLogout.setOnClickListener(logoutAction);
 
         loggedOwner = Util.getLoggedOwner(getContext());
 
@@ -173,6 +180,16 @@ public class ProfileFragment extends Fragment {
 
         return v;
     }
+
+    private View.OnClickListener logoutAction = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Util.logout(getContext());
+            Intent i = new Intent(getContext(), LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+        }
+    };
 
     private void switchViews(boolean edit){
 

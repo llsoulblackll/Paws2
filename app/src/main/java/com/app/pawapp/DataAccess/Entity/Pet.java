@@ -49,7 +49,10 @@ public class Pet implements Parcelable {
         age = in.readString();
         description = in.readString();
         picture = in.readString();
-        publishDate = new Date(in.readLong());
+
+        long dateHolder = in.readLong();
+        publishDate =  dateHolder != 0L ? new Date(dateHolder) : null;
+
         state = in.readByte() == 1;
         otherRace = in.readString();
         specieId = in.readInt();
@@ -187,8 +190,8 @@ public class Pet implements Parcelable {
         parcel.writeString(age);
         parcel.writeString(description);
         parcel.writeString(picture);
-        parcel.writeLong(publishDate.getTime());
-        parcel.writeByte((byte)(state ? 0 : 1));
+        parcel.writeLong(publishDate != null ? publishDate.getTime() : 0L);
+        parcel.writeByte((byte)(state ? 1 : 0));
         parcel.writeString(otherRace);
         parcel.writeInt(specieId);
         parcel.writeInt(raceId);

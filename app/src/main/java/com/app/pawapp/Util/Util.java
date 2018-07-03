@@ -85,6 +85,14 @@ public final class Util {
         return SharedPreferencesHelper.setValue(LOGGED_OWNER_KEY, GsonFactory.getWCFGson().toJson(owner), context);
     }
 
+    public static boolean isLoggedIn(Context context){
+        return getLoggedOwner(context) != null;
+    }
+
+    public static boolean logout(Context context){
+        return setLoggedOwner(null, context);
+    }
+
     public static void showAlert(String msg, Context context){
         new AlertDialog.Builder(context)
                 .setTitle("Aviso")
