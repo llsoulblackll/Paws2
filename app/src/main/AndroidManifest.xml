@@ -20,12 +20,11 @@
             </intent-filter>-->
         </activity>
         <activity android:name=".Login.LoginActivity">
-
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
         <activity android:name=".Register.RegisterActivity">
 
@@ -58,11 +57,11 @@
             -->
         </activity>
         <activity android:name=".InboxMessages.InboxActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".SplashActivity">
 

@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        awesomeValidation.addValidation(this, R.id.tilUsername, "^(?=[^\\d_].*?\\d)\\w(\\w|[!@#$%]){4,14}$", R.string.USER_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilUsername, "^(?=[^\\d_].*?)\\w(\\w|[!@#$%]){4,14}$", R.string.USER_ERROR);//^(?=[^\d_].*?\d)\w(\w|[!@#$%]){4,14}$
         awesomeValidation.addValidation(this, R.id.tilPassword, "^(?=[^\\d_].*?\\d)\\w(\\w|[.!@#$%]){4,9}$", R.string.PASS_ERROR);
         awesomeValidation.addValidation(this, R.id.tilName, "^[a-zA-Z\\s]{1,}$", R.string.NAME_ERROR);
         awesomeValidation.addValidation(this, R.id.tilLastname, "^[a-zA-Z\\s]{1,}$", R.string.LASTNAME_ERROR);

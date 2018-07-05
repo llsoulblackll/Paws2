@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,13 +50,19 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(Util.isLoggedIn(this)) {
+            startActivity(new Intent(this, MainActivity.class));
+            ActivityCompat.finishAffinity(this);
+        }
+
         setContentView(R.layout.activity_login);
 
         ownerDao = DaoFactory.getOwnerDao(this);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        awesomeValidation.addValidation(this, R.id.tilUser, "^(?=[^\\d_].*?\\d)\\w(\\w|[!@#$%]){4,14}$*", R.string.USER_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilUser, "^(?=[^\\d_].*?)\\w(\\w|[!@#$%]){4,14}$*", R.string.USER_ERROR);
         awesomeValidation.addValidation(this, R.id.tilPass, "^(?=[^\\d_].*?\\d)\\w(\\w|[.!@#$%]){4,9}$", R.string.PASS_ERROR);
 
         userEditText = findViewById(R.id.etUser);
