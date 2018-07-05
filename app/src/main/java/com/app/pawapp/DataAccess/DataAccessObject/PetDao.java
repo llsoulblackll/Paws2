@@ -2,6 +2,7 @@ package com.app.pawapp.DataAccess.DataAccessObject;
 
 import android.content.Context;
 
+import com.app.pawapp.DataAccess.DataTransferObject.PetDto;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.Util.Gson.GsonFactory;
 import com.app.pawapp.Util.Util;
@@ -20,6 +21,7 @@ public class PetDao implements Ws<Pet>{
     private static final String DELETE_METHOD = "Delete";
     private static final String FIND_METHOD = "Find";
     private static final String FIND_ALL_METHOD = "FindAll";
+    private static final String FIND_ALL_DTO_METHOD = "FindAllDto";
     private static final String LOGIN_METHOD = "Login";
 
     private Context context;
@@ -93,6 +95,42 @@ public class PetDao implements Ws<Pet>{
                         List<Pet> lPets = null;
                         if(response != null){
                             WCFResponse<List<Pet>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, Pet.class)));
+                            lPets = pets.getResponse();
+                        }
+                        onResult.execute(lPets);
+                    }
+                });
+    }
+
+    public void findAllDto(final WsCallback<List<PetDto>> onResult){
+        Util.HttpHelper.makeRequest(
+                String.format("%s/%s/%s", Util.URL, ENDPOINT, FIND_ALL_DTO_METHOD),
+                Util.HttpHelper.GET,
+                null,
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        List<PetDto> lPets = null;
+                        if(response != null){
+                            WCFResponse<List<PetDto>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, PetDto.class)));
+                            lPets = pets.getResponse();
+                        }
+                        onResult.execute(lPets);
+                    }
+                });
+    }
+
+    public void findAllDto(int ownerId, final WsCallback<List<PetDto>> onResult){
+        Util.HttpHelper.makeRequest(
+                String.format(Locale.getDefault(),"%s/%s/%s/%d", Util.URL, ENDPOINT, FIND_ALL_DTO_METHOD, ownerId),
+                Util.HttpHelper.GET,
+                null,
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        List<PetDto> lPets = null;
+                        if(response != null){
+                            WCFResponse<List<PetDto>> pets = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Util.getType(List.class, PetDto.class)));
                             lPets = pets.getResponse();
                         }
                         onResult.execute(lPets);

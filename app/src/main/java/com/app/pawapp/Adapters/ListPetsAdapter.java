@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.pawapp.Classes.Pets;
+import com.app.pawapp.DataAccess.DataTransferObject.PetDto;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
 import com.app.pawapp.TabsFragments.MyPetsFragment;
@@ -25,9 +26,9 @@ import java.util.List;
 public class ListPetsAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Pet> listpets;
+    private List<PetDto> listpets;
 
-    public ListPetsAdapter(Context context, List<Pet> listpets) {
+    public ListPetsAdapter(Context context, List<PetDto> listpets) {
         this.context = context;
         this.listpets = listpets;
     }
@@ -50,7 +51,7 @@ public class ListPetsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
 
-        Pet item = (Pet) getItem(position);
+        PetDto item = (PetDto) getItem(position);
 
         view = LayoutInflater.from(context).inflate(R.layout.item_pets, null);
         ImageView img = view.findViewById(R.id.PetImg);
@@ -67,8 +68,8 @@ public class ListPetsAdapter extends BaseAdapter {
         name.setText(item.getName());
         age.setText(item.getAge());
         des.setText(item.getDescription());
-        type.setText(""+item.getSpecieId());
-        race.setText(""+item.getRaceId());
+        type.setText(item.getSpecie().getName());
+        race.setText(item.getRace().getName());
 
         return view;
     }

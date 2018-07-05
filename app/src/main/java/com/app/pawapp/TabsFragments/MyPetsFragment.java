@@ -13,6 +13,7 @@ import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.PetDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
 import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
+import com.app.pawapp.DataAccess.DataTransferObject.PetDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.R;
@@ -51,9 +52,9 @@ public class    MyPetsFragment extends Fragment {
     }
 
     private void GetArrayItems(ListView toPopulate) {
-        petDao.findAll(loggedOwner.getId(), new Ws.WsCallback<List<Pet>>() {
+        petDao.findAllDto(loggedOwner.getId(), new Ws.WsCallback<List<PetDto>>() {
             @Override
-            public void execute(List<Pet> response) {
+            public void execute(List<PetDto> response) {
                 if(response != null)
                     listView.setAdapter(new ListPetsAdapter(getContext(), response));
             }
