@@ -84,7 +84,7 @@
                 android:inputType="text"
                 android:textSize="15sp"/>
         </android.support.design.widget.TextInputLayout>
-z
+
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/spnTypes"
             android:layout_width="320dp"

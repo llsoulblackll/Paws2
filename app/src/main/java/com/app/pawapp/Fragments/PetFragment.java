@@ -35,6 +35,7 @@ import com.squareup.picasso.Picasso;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 public class PetFragment extends Fragment {
@@ -139,6 +140,8 @@ public class PetFragment extends Fragment {
                 pet.setDescription(descTextInputEditText.getText().toString());
                 pet.setSpecieId(selectedSpecie != null ? selectedSpecie.getId() : 0);
                 //TODO: ADD RACE COLUMN TO TABLE FOR OTHERS
+                pet.setOtherRace(raceTextInputEditText.getText().toString());
+                pet.setPublishDate(new Date());
                 pet.setRaceId(selectedRace != null ? selectedRace.getId() : 0);
                 pet.setOwnerId(Util.getLoggedOwner(getContext()).getId());
 
