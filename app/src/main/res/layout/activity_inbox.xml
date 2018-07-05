@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/White"
     tools:context=".InboxMessages.InboxActivity">
 
     <ListView
         android:id="@+id/inbox_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:divider="@color/White" />
 
 </android.support.constraint.ConstraintLayout>

@@ -27,6 +27,8 @@ import com.app.pawapp.DataAccess.Entity.District;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.R;
 import com.app.pawapp.Survey.SurveyActivity;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.ParseException;
@@ -65,13 +67,20 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String dateString = null;
 
-    //String[] districts = {"Ate","Breña","Cercado de Lima","San Isidro","Surquillos","Villa el Salvador"};
+    AwesomeValidation awesomeValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setTitle("Datos Personales");
+
+        awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+
+        awesomeValidation.addValidation(this, R.id.tilUsername, "^(?=[^\\d_].*?\\d)\\w(\\w|[!@#$%]){4,14}$", R.string.USER_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilPassword, "^(?=[^\\d_].*?\\d)\\w(\\w|[.!@#$%]){4,9}$", R.string.PASS_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilName, "^[a-zA-Z\\s]{1,}$", R.string.NAME_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilLastname, "^[a-zA-Z\\s]{1,}$", R.string.LASTNAME_ERROR);
 
         districtDao = DaoFactory.getDistrictDao(this);
         surveyDao = DaoFactory.getSurveyDao(this);
@@ -97,23 +106,23 @@ public class RegisterActivity extends AppCompatActivity {
                 dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
                 datePickerDialog = new DatePickerDialog(RegisterActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                String format = "%d / %d / %d";
-                                if(day < 10 && month < 10)
-                                    format = "0%d / 0%d / %d";
-                                else if(day > 10 && month < 10)
-                                    format = "%d / 0%d / %d";
-                                else if(day < 10 && month > 10)
-                                    format = "0%d / %d / %d";
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        String format = "%d / %d / %d";
+                        if (day < 10 && month < 10)
+                            format = "0%d / 0%d / %d";
+                        else if (day > 10 && month < 10)
+                            format = "%d / 0%d / %d";
+                        else if (day < 10 && month > 10)
+                            format = "0%d / %d / %d";
 
-                                dateString = String.format("%d/%d/%d", day, month + 1, year);
+                        dateString = String.format("%d/%d/%d", day, month + 1, year);
 
-                                Birth.setText(String.format(Locale.getDefault(),
-                                        format, day, month + 1, year));
+                        Birth.setText(String.format(Locale.getDefault(),
+                                format, day, month + 1, year));
 
-                            }
-                        }, year, month, dayOfMonth);
+                    }
+                }, year, month, dayOfMonth);
                 datePickerDialog.show();
             }
         });
@@ -143,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        if(getSupportActionBar() != null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -152,14 +161,19 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if(id == android.R.id.home) {
+        if (id == android.R.id.home) {
             this.finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void Next(View view) throws ParseException {
+        if (awesomeValidation.validate()) {
+            Validate();
+        }
+    }
 
+    private void Validate() throws ParseException {
         Owner owner = new Owner();
         owner.setUsername(userEditText.getText().toString());
         owner.setPassword(passEditText.getText().toString());
@@ -177,4 +191,5 @@ public class RegisterActivity extends AppCompatActivity {
         i.putExtra(OWNER_KEY, owner);
         startActivity(i);
     }
+
 }

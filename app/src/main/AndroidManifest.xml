@@ -20,11 +20,12 @@
             </intent-filter>-->
         </activity>
         <activity android:name=".Login.LoginActivity">
-            <intent-filter>
+
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".Register.RegisterActivity">
 
@@ -46,7 +47,7 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".DialogUser.DialogActivity">
+        <activity android:name=".DialogUser.ContactDialogActivity">
 
             <!--
             <intent-filter>
@@ -57,6 +58,22 @@
             -->
         </activity>
         <activity android:name=".InboxMessages.InboxActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SplashActivity">
+
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".DialogUser.InfoDialogActivity"></activity>
+        <activity android:name=".InboxMessages.AnswerActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

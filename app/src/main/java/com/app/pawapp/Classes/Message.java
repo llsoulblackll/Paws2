@@ -4,20 +4,18 @@ import java.io.Serializable;
 
 public class Message implements Serializable {
 
-    public int Img;
-    public String Name;
-    public String LastName;
-    public String Email;
-    public String Phone;
-    public String Time;
+    private int Img;
+    private String Name;
+    private String LastName;
+    private String Message;
+    private String Time;
 
-    public Message(int img, String name, String lastName, String email, String phone, String time) {
-        this.Img = img;
-        this.Name = name;
-        this.LastName = lastName;
-        this.Email = email;
-        this.Phone = phone;
-        this.Time = time;
+    public Message(int img, String name, String lastName, String message, String time) {
+        Img = img;
+        Name = name;
+        LastName = lastName;
+        Message = message;
+        Time = time;
     }
 
     public int getImg() {
@@ -44,20 +42,12 @@ public class Message implements Serializable {
         LastName = lastName;
     }
 
-    public String getEmail() {
-        return Email;
+    public String getMessage() {
+        return Message;
     }
 
-    public void setEmail(String email) {
-        Email = email;
-    }
-
-    public String getPhone() {
-        return Phone;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
+    public void setMessage(String message) {
+        Message = message;
     }
 
     public String getTime() {

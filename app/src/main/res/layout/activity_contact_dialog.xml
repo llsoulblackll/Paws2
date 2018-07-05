@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DialogUser.DialogActivity">
+    tools:context=".DialogUser.ContactDialogActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccentPaw"
+        android:background="@color/DeepKoamaru"
         android:gravity="center"
         android:orientation="vertical">
 

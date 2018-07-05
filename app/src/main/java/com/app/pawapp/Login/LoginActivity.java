@@ -54,19 +54,19 @@ public class LoginActivity extends AppCompatActivity {
         ownerDao = DaoFactory.getOwnerDao(this);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
-        awesomeValidation.addValidation(this, R.id.tilUser, "^[A-z].*", R.string.USER_ERROR);
-        awesomeValidation.addValidation(this, R.id.tilPass, "^[0-9A-z]{1,20}+$", R.string.PASS_ERROR);
+
+        awesomeValidation.addValidation(this, R.id.tilUser, "^(?=[^\\d_].*?\\d)\\w(\\w|[!@#$%]){4,14}$*", R.string.USER_ERROR);
+        awesomeValidation.addValidation(this, R.id.tilPass, "^(?=[^\\d_].*?\\d)\\w(\\w|[.!@#$%]){4,9}$", R.string.PASS_ERROR);
 
         userEditText = findViewById(R.id.etUser);
         passEditText = findViewById(R.id.etPass);
 
-        if(getSupportActionBar() != null)
+        if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
         Window window = this.getWindow();
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(Color.TRANSPARENT);
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void execute(OwnerDto response) {
-                if(response != null) {
+                if (response != null) {
                     pd.dismiss();
 
                     //save user current user
