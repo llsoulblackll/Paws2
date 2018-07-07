@@ -69,7 +69,7 @@ public class ListPetsAdapter extends BaseAdapter {
         age.setText(item.getAge());
         des.setText(item.getDescription());
         type.setText(item.getSpecie().getName());
-        race.setText(item.getRace().getName());
+        race.setText(item.getRace() != null ? item.getRace().getName() : item.getOtherRace());
 
         return view;
     }

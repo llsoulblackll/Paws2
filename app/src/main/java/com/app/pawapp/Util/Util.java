@@ -3,17 +3,20 @@ package com.app.pawapp.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 
+import com.app.pawapp.Classes.PawPicture;
 import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.Util.Gson.GsonFactory;
@@ -37,8 +40,8 @@ public final class Util {
     private static final String LOGGED_OWNER_KEY = "LoggedOwner";
     private static final String TOKEN_KEY = "TokenKey";
 
-    public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
-    //public static final String URL = "http://192.168.1.45:60602/Service";
+    //public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
+    public static final String URL = "http://192.168.1.53:60602/Service";
     public static final String RESPONSE = "Response";
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String RESPONSE_MESSAGE = "ResponseMessage";
@@ -78,10 +81,7 @@ public final class Util {
     }
 
     public static OwnerDto getLoggedOwner(Context context){
-        Object u = SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, context);
-        if(u != null)
-            return GsonFactory.getWCFGson().fromJson(u.toString(), OwnerDto.class);
-        return null;
+        return GsonFactory.getWCFGson().fromJson(SharedPreferencesHelper.getValue(LOGGED_OWNER_KEY, context).toString(), OwnerDto.class);
     }
 
     public static boolean setLoggedOwner(OwnerDto owner, Context context){
@@ -89,11 +89,15 @@ public final class Util {
     }
 
     public static boolean isLoggedIn(Context context){
-        return getLoggedOwner(context) != null;
+        return SharedPreferencesHelper.hasKey(LOGGED_OWNER_KEY, context);
     }
 
     public static boolean logout(Context context){
-        return setLoggedOwner(null, context);
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .remove(LOGGED_OWNER_KEY)
+                .apply();//APPLY MAKES THE CHANGES IN MEMORY AND STARTS AN ASYNC TASK TO PERSIST THEM IN DISK
+        return !SharedPreferencesHelper.hasKey(LOGGED_OWNER_KEY, context);
     }
 
     public static void showAlert(String msg, Context context){
@@ -139,6 +143,20 @@ public final class Util {
         }
 
         return baos.toByteArray();
+    }
+
+    public static PawPicture getPictureFromIntent(Intent i, Context context) throws IOException {
+        if(i.getData() != null) {
+            PawPicture pic = new PawPicture();
+            Bitmap img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), i.getData());
+            String mime = context.getContentResolver().getType(i.getData());
+            pic.setUri(i.getData());
+            pic.setImage(img);
+            if(mime != null)
+                pic.setType(mime.substring(mime.indexOf("/") + 1));
+            return pic;
+        }
+        return null;
     }
 
     public static class PermissionHelper {
@@ -295,6 +313,10 @@ public final class Util {
             editor.apply();
 
             return true;
+        }
+
+        public static boolean hasKey(String key, Context context){
+            return PreferenceManager.getDefaultSharedPreferences(context).contains(key);
         }
     }
 

@@ -59,4 +59,19 @@ public class District implements Parcelable{
         parcel.writeInt(id);
         parcel.writeString(name);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        District district = (District) o;
+
+        return id == district.id && (name != null ? name.equals(district.name) : district.name == null);
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

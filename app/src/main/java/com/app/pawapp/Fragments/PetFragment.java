@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.app.pawapp.Classes.PawPicture;
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.PetDao;
 import com.app.pawapp.DataAccess.DataAccessObject.RaceDao;
@@ -165,14 +166,16 @@ public class PetFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK){
             try {
-                if(data.getData() != null) {
-                    Bitmap img = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
-                    String ext = getContext().getContentResolver().getType(data.getData());
-                    selectedImg = img;
-                    selectedImgExtension = ext.substring(ext.indexOf("/") + 1);
-                    //load image with a placeholder for how long it takes
-                    Picasso.get().load(data.getData()).placeholder(R.drawable.progress_circle_anim).into(petImageView);
-                }
+
+                PawPicture pic = Util.getPictureFromIntent(data, getContext());
+                selectedImg = pic.getImage();
+                selectedImgExtension = pic.getType();
+                //load image with a placeholder for how long it takes
+                Picasso.get()
+                        .load(pic.getUri())
+                        .placeholder(R.drawable.progress_circle_anim)
+                        .into(petImageView);
+
             } catch (IOException | NullPointerException e) {
                 Util.showAlert("Hubo un error al seleccionar la imagen", getContext());
             }

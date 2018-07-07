@@ -1,5 +1,6 @@
 package com.app.pawapp.TabsFragments;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -61,18 +62,25 @@ public class GeneralPetsFragment extends Fragment {
                 builder.setCancelable(true);
                 builder.setTitle("Eliga una opción");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @SuppressLint("InflateParams")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            /*Envía aviso al otro usuario*/
-                            Toast.makeText(getActivity(), "Solicitud de Adopción Enviada Satisfactoriamente", Toast.LENGTH_SHORT).show();
-                        } else if (which == 1) {
-                            /*Muestra información del usuario de la mascota*/
-                            /*Toast.makeText(getActivity(), "Información", Toast.LENGTH_SHORT).show();*/
-                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                            LayoutInflater inflater = getActivity().getLayoutInflater();
-                            builder.setView(inflater.inflate(R.layout.activity_contact_dialog, null));
-                            builder.show();
+                        switch (which){
+                            case 0:
+                                /*Envía aviso al otro usuario*/
+                                Toast.makeText(getActivity(), "Solicitud de Adopción Enviada Satisfactoriamente", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 1:
+                                /*Muestra información del usuario de la mascota*/
+                                /*Toast.makeText(getActivity(), "Información", Toast.LENGTH_SHORT).show();*/
+                                if(getActivity() != null) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                                    View view = inflater.inflate(R.layout.activity_contact_dialog, null);
+                                    builder.setView(view);
+                                    builder.show();
+                                }
+                                break;
                         }
                     }
                 });
