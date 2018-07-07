@@ -37,8 +37,8 @@ public final class Util {
     private static final String LOGGED_OWNER_KEY = "LoggedOwner";
     private static final String TOKEN_KEY = "TokenKey";
 
-    //public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
-    public static final String URL = "http://192.168.1.45:60602/Service";
+    public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
+    //public static final String URL = "http://192.168.1.45:60602/Service";
     public static final String RESPONSE = "Response";
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String RESPONSE_MESSAGE = "ResponseMessage";
@@ -78,7 +78,10 @@ public final class Util {
     }
 
     public static OwnerDto getLoggedOwner(Context context){
-        return GsonFactory.getWCFGson().fromJson(SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, context).toString(), OwnerDto.class);
+        Object u = SharedPreferencesHelper.getValue(Util.LOGGED_OWNER_KEY, context);
+        if(u != null)
+            return GsonFactory.getWCFGson().fromJson(u.toString(), OwnerDto.class);
+        return null;
     }
 
     public static boolean setLoggedOwner(OwnerDto owner, Context context){
