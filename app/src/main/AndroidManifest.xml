@@ -12,21 +12,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/PawApp">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".Login.LoginActivity">
-            <intent-filter>
+        <activity android:name=".Login.LoginActivity"
+            android:screenOrientation="portrait">
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
-        <activity android:name=".Register.RegisterActivity">
+        <activity android:name=".Register.RegisterActivity"
+            android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -36,7 +39,8 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".Survey.SurveyActivity">
+        <activity android:name=".Survey.SurveyActivity"
+            android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -46,7 +50,8 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".DialogUser.ContactDialogActivity">
+        <activity android:name=".DialogUser.ContactDialogActivity"
+            android:screenOrientation="portrait">
 
             <!--
             <intent-filter>
@@ -56,23 +61,26 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".InboxMessages.InboxActivity">
+        <activity android:name=".InboxMessages.InboxActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
         </activity>
-        <activity android:name=".SplashActivity">
-
-            <!--<intent-filter>
+        <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
-        <activity android:name=".DialogUser.InfoDialogActivity"></activity>
-        <activity android:name=".InboxMessages.AnswerActivity">
+        <activity android:name=".DialogUser.InfoDialogActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InboxMessages.AnswerActivity"
+            android:screenOrientation="portrait">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

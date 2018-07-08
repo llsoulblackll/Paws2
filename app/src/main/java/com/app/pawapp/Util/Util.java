@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -41,7 +42,7 @@ public final class Util {
     private static final String TOKEN_KEY = "TokenKey";
 
     //public static final String URL = "http://pawswcf-dev.us-west-1.elasticbeanstalk.com/Service";
-    public static final String URL = "http://192.168.1.53:60602/Service";
+    public static final String URL = "http://192.168.1.46:60602/Service";
     public static final String RESPONSE = "Response";
     public static final String RESPONSE_CODE = "ResponseCode";
     public static final String RESPONSE_MESSAGE = "ResponseMessage";
@@ -145,7 +146,7 @@ public final class Util {
         return baos.toByteArray();
     }
 
-    public static PawPicture getPictureFromIntent(Intent i, Context context) throws IOException {
+    public static PawPicture getPictureFromIntent(@NonNull Intent i, Context context) throws IOException {
         if(i.getData() != null) {
             PawPicture pic = new PawPicture();
             Bitmap img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), i.getData());

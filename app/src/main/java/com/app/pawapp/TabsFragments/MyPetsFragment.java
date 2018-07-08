@@ -1,5 +1,6 @@
 package com.app.pawapp.TabsFragments;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,13 @@ public class    MyPetsFragment extends Fragment {
     private PetDao petDao;
     private OwnerDto loggedOwner;
 
+    private List<PetDto> pets;
+
+    /**
+     * Checks whether the fragment has a state (all instance variables are still set) or not
+     */
+    private boolean hasState = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,14 +51,18 @@ public class    MyPetsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        petDao = DaoFactory.getPetDao(getContext());
-        loggedOwner = Util.getLoggedOwner(getContext());
-
         View v = inflater.inflate(R.layout.fragment_mypets, container, false);
-
         listView = v.findViewById(R.id.MyPetsList);
 
-        GetArrayItems(listView);
+        if(!hasState){
+            petDao = DaoFactory.getPetDao(getContext());
+            loggedOwner = Util.getLoggedOwner(getContext());
+
+            GetArrayItems(listView);
+
+            hasState = true;
+        } else
+            listView.setAdapter(new ListPetsAdapter(getContext(), pets));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,13 +87,24 @@ public class    MyPetsFragment extends Fragment {
     }
 
     private void GetArrayItems(ListView toPopulate) {
+        final ProgressDialog pg = ProgressDialog.show(getContext(), "Cargando", "Espere");
         petDao.findAllDto(loggedOwner.getId(), new Ws.WsCallback<List<PetDto>>() {
             @Override
             public void execute(List<PetDto> response) {
-                if(response != null)
-                    listView.setAdapter(new ListPetsAdapter(getContext(), response));
+                if(getContext() != null) {
+                    if (response != null) {
+                        pets = response;
+                        listView.setAdapter(new ListPetsAdapter(getContext(), response));
+                    }
+                    pg.dismiss();
+                }
             }
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        hasState = false;
+    }
 }

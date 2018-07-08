@@ -35,7 +35,11 @@ public class GeneralPetsFragment extends Fragment {
     private PetDao petDao;
     private OwnerDto loggedOwner;
 
-    CharSequence options[] = new CharSequence[] {"Adoptar Mascota", "Información de Contacto"};
+    private boolean hasState;
+
+    private List<PetDto> pets;
+
+    private CharSequence options[] = new CharSequence[] {"Adoptar Mascota", "Información de Contacto"};
 
     public GeneralPetsFragment() {}
 
@@ -47,13 +51,21 @@ public class GeneralPetsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        petDao = DaoFactory.getPetDao(getContext());
-        loggedOwner = Util.getLoggedOwner(getContext());
-
         layout = inflater.inflate(R.layout.fragment_generalpets, container, false);
         listView = layout.findViewById(R.id.GeneralList);
 
-        GetArrayItems(listView);
+        //IS ALWAYS NULL FOR SOME REASON
+        if(savedInstanceState == null) {
+        }
+
+        if(!hasState){
+            petDao = DaoFactory.getPetDao(getContext());
+            loggedOwner = Util.getLoggedOwner(getContext());
+
+            GetArrayItems(listView);
+            hasState = true;
+        } else
+            listView.setAdapter(new ListPetsAdapter(getContext(), pets));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -95,8 +107,12 @@ public class GeneralPetsFragment extends Fragment {
         petDao.findAllDto(new Ws.WsCallback<List<PetDto>>() {
             @Override
             public void execute(List<PetDto> response) {
-                if(response != null)
-                    listView.setAdapter(new ListPetsAdapter(getContext(), response));
+                if(getContext() != null) {
+                    if (response != null) {
+                        pets = response;
+                        listView.setAdapter(new ListPetsAdapter(getContext(), response));
+                    }
+                }
             }
         });
     }

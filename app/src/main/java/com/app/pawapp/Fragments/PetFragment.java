@@ -89,36 +89,38 @@ public class PetFragment extends Fragment {
         specieDao.findAll(new Ws.WsCallback<List<Specie>>() {
             @Override
             public void execute(List<Specie> response) {
-                species = response;
-                String[] ss = new String[response.size()];
+                if (getContext() != null) {
+                    species = response;
+                    String[] ss = new String[response.size()];
 
-                for (int i = 0; i < response.size(); i++){
-                    ss[i] = species.get(i).getName();
-                    System.out.println(species.get(i).getName());
+                    for (int i = 0; i < response.size(); i++) {
+                        ss[i] = species.get(i).getName();
+                    }
+
+                    if (ss.length > 0) {
+                        //SINCE THIS IS A BACKGROUND CALL IT CAN BE RESOLVED WHEN THE ACTIVITY IS LONGER NO NULL THROWING AN NPE
+                        ArrayAdapter<String> arrayAdapterType = new ArrayAdapter<>(getContext(),
+                                android.R.layout.simple_spinner_dropdown_item, ss);
+                        arrayAdapterType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+                        mbSpinnerType.setAdapter(arrayAdapterType);
+
+                        //mbSpinnerType.setFocusable(true);
+
+                        mbSpinnerType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                selectedSpecie = species.get(i);
+                                fillRaces(species.get(i).getId());
+                            }
+                        });
+
+                        //select the first one by default
+                        selectedSpecie = species.get(0);
+                        mbSpinnerType.setText(selectedSpecie.getName());
+                        fillRaces(species.get(0).getId());
+                    }
+
                 }
-
-                if(ss.length > 0) {
-                    ArrayAdapter<String> arrayAdapterType = new ArrayAdapter<>(PetFragment.this.getActivity(),
-                            android.R.layout.simple_spinner_dropdown_item, ss);
-                    arrayAdapterType.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-
-                    //mbSpinnerType.setFocusable(true);
-                    mbSpinnerType.setAdapter(arrayAdapterType);
-
-                    mbSpinnerType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            selectedSpecie = species.get(i);
-                            fillRaces(species.get(i).getId());
-                        }
-                    });
-
-                    //select the first one by default
-                    selectedSpecie = species.get(0);
-                    mbSpinnerType.setText(selectedSpecie.getName());
-                    fillRaces(species.get(0).getId());
-                }
-
             }
         });
 

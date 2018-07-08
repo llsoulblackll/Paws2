@@ -50,10 +50,10 @@ import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
-    private static final int PROFILE_PIC_REQUEST_CODE = 0x29841;
+    private static final int PROFILE_PIC_REQUEST_CODE = 0xFA;
 
-    private TextView txtName,txtLastName,txtDni,txtBirth,txtEmail,txtPhone,txtAddress,txtDistrict, txtRegisteredPets, txtAdoptedPets;
-    private EditText etName,etLastName,etDni,etBirth,etEmail,etPhone,etAddress;
+    private TextView txtName, txtLastName, txtDni, txtBirth, txtEmail, txtPhone, txtAddress, txtDistrict, txtRegisteredPets, txtAdoptedPets;
+    private EditText etName, etLastName, etDni, etBirth, etEmail, etPhone, etAddress;
     private Spinner spnDistrict;
     private FloatingActionButton fabEdit, fabSave, fabInbox, fabPet, fabPhoto;
     private Button btnLogout;
@@ -69,7 +69,8 @@ public class ProfileFragment extends Fragment {
 
     private PawPicture selectedPicture;
 
-    public ProfileFragment() {}
+    public ProfileFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,7 +96,7 @@ public class ProfileFragment extends Fragment {
         txtAdoptedPets = v.findViewById(R.id.txtAdoptedPets);
 
         etName = v.findViewById(R.id.etName);
-        etLastName= v.findViewById(R.id.etLastName);
+        etLastName = v.findViewById(R.id.etLastName);
         etDni = v.findViewById(R.id.etDni);
         etBirth = v.findViewById(R.id.etBirth);
         etEmail = v.findViewById(R.id.etEmail);
@@ -120,40 +121,48 @@ public class ProfileFragment extends Fragment {
         txtRegisteredPets.setText(String.valueOf(loggedOwner.getRegisteredAmount()));
         txtAdoptedPets.setText(String.valueOf(loggedOwner.getAdoptedAmount()));
 
-        if(getContext() != null) {
+        Picasso.get()
+                .load(loggedOwner.getProfilePicture())
+                .placeholder(R.drawable.progress_circle_anim)
+                .into(imgProfilePic);
+
+        //INSTANCE VARIABLES ARE ALWAYS SAVED SINCE OUR FRAGMENTS ARE NEVER DETACHED FROM THE ACTIVITY
+        if(districts == null) {
             distritcDao.findAll(new Ws.WsCallback<List<District>>() {
                 @Override
                 public void execute(List<District> response) {
+                    if (getContext() != null) {
+                        districts = response;
 
-                    districts = response;
+                        String[] diss = new String[response.size()];
 
-                    String[] diss = new String[response.size()];
+                        for (int i = 0, len = response.size(); i < len; i++)
+                            diss[i] = response.get(i).getName();
 
-                    for(int i = 0, len = response.size(); i < len; i++)
-                        diss[i] = response.get(i).getName();
+                        spnDistrict.setAdapter(new ArrayAdapter<>(
+                                getContext(),
+                                R.layout.support_simple_spinner_dropdown_item,
+                                diss));
 
-                    spnDistrict.setAdapter(new ArrayAdapter<String>(
-                            getContext(),
-                            R.layout.support_simple_spinner_dropdown_item,
-                            diss));
+                        selectedDistrict = loggedOwner.getDistrict();
 
-                    selectedDistrict = loggedOwner.getDistrict();
+                        switchViews(false);
 
-                    switchViews(false);
+                        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                selectedDistrict = districts.get(i);
+                            }
 
-                    spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            selectedDistrict = districts.get(i);
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-                        }
-                    });
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+                            }
+                        });
+                    }
                 }
             });
-        }
+        } else
+            switchViews(false);
 
         v.findViewById(R.id.fabEdit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,7 +205,7 @@ public class ProfileFragment extends Fragment {
                 ownerDao.update(o, new Ws.WsCallback<Boolean>() {
                     @Override
                     public void execute(Boolean response) {
-                        if(response)
+                        if (response)
                             Util.setLoggedOwner(loggedOwner, getContext());
                         switchViews(false);
                     }
@@ -233,7 +242,7 @@ public class ProfileFragment extends Fragment {
         etBirth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getContext() != null) {
+                if (getContext() != null) {
                     final Calendar calendar = Calendar.getInstance();
                     DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -254,39 +263,56 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == PROFILE_PIC_REQUEST_CODE){
+        if (requestCode == PROFILE_PIC_REQUEST_CODE) {
             try {
-                selectedPicture = Util.getPictureFromIntent(data, getContext());
 
-                Owner o = new Owner(
-                        loggedOwner.getId(),
-                        loggedOwner.getUsername(),
-                        loggedOwner.getPassword(),
-                        loggedOwner.getName(),
-                        loggedOwner.getLastName(),
-                        loggedOwner.getBirthDate(),
-                        loggedOwner.getDNI(),
-                        loggedOwner.geteMail(),
-                        loggedOwner.getAddress(),
-                        loggedOwner.getPhoneNumber(),
-                        loggedOwner.getProfilePicture(),
-                        loggedOwner.getDistrict().getId()
-                );
+                if (data != null) {
 
-                o.setImageBase64(Util.toBase64(Util.bitmapToBytes(selectedPicture.getImage(), selectedPicture.getType())));
-                o.setImageExtension(selectedPicture.getType());
-                ownerDao.update(o, new Ws.WsCallback<Boolean>() {
-                    @Override
-                    public void execute(Boolean response) {
-                        if(response){
-                            Picasso.get()
-                                    .load(selectedPicture.getUri())
-                                    .placeholder(R.drawable.progress_circle_anim)
-                                    .into(imgProfilePic);
+                    selectedPicture = Util.getPictureFromIntent(data, getContext());
+
+                    Owner o = new Owner(
+                            loggedOwner.getId(),
+                            loggedOwner.getUsername(),
+                            loggedOwner.getPassword(),
+                            loggedOwner.getName(),
+                            loggedOwner.getLastName(),
+                            loggedOwner.getBirthDate(),
+                            loggedOwner.getDNI(),
+                            loggedOwner.geteMail(),
+                            loggedOwner.getAddress(),
+                            loggedOwner.getPhoneNumber(),
+                            loggedOwner.getProfilePicture(),
+                            loggedOwner.getDistrict().getId()
+                    );
+
+                    o.setImageBase64(Util.toBase64(Util.bitmapToBytes(selectedPicture.getImage(), selectedPicture.getType())));
+                    o.setImageExtension(selectedPicture.getType());
+                    ownerDao.update(o, new Ws.WsCallback<Boolean>() {
+                        @Override
+                        public void execute(Boolean response) {
+                            if (response) {
+                                Owner own = new Owner();
+                                own.setUsername(own.getUsername());
+                                own.setPassword(own.getPassword());
+
+                                ownerDao.fullLogin(own, new Ws.WsCallback<OwnerDto>() {
+                                    @Override
+                                    public void execute(OwnerDto response) {
+                                        Picasso.get()
+                                                .load(selectedPicture.getUri())
+                                                .placeholder(R.drawable.progress_circle_anim)
+                                                .into(imgProfilePic);
+
+                                        loggedOwner = response;
+                                        Util.setLoggedOwner(loggedOwner, getContext());
+                                    }
+                                });
+
+                            }
                         }
-                    }
-                });
+                    });
 
+                }
 
             } catch (IOException e) {
                 Util.showAlert("Ha ocurrido un error al subir su imagen", getContext());
@@ -297,7 +323,7 @@ public class ProfileFragment extends Fragment {
     private View.OnClickListener logoutAction = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(Util.logout(getContext())) {
+            if (Util.logout(getContext())) {
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
@@ -306,7 +332,7 @@ public class ProfileFragment extends Fragment {
         }
     };
 
-    private void switchViews(boolean edit){
+    private void switchViews(boolean edit) {
 
         txtName.setText(loggedOwner.getName());
         etName.setText(loggedOwner.getName());
@@ -331,10 +357,9 @@ public class ProfileFragment extends Fragment {
         etAddress.setText(loggedOwner.getAddress());
 
         txtDistrict.setText(loggedOwner.getDistrict().getName());
-        System.out.println(districts.indexOf(loggedOwner.getDistrict()));
         spnDistrict.setSelection(districts.indexOf(selectedDistrict));
 
-        if(edit){
+        if (edit) {
             fabEdit.setVisibility(View.GONE);
             fabSave.setVisibility(View.VISIBLE);
 
