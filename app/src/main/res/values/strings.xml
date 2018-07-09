@@ -15,7 +15,7 @@
     <string name="dni">DNI</string>
     <string name="email">Correo Electrónico</string>
     <string name="address">Dirección</string>
-    <string name="regNext">Siguiente</string>
+    <string name="next">Siguiente</string>
 
     <string name="titlesurvey01">¿Qué tipo de vivienda posee?</string>
     <string name="titlesurvey02">¿Con cuántas personas vive?</string>
@@ -23,7 +23,7 @@
     <string name="titlesurvey04">¿De qué tipo es/son la(s) mascota(s)?</string>
     <string name="titlesurvey05">¿En qué modalidad trabaja?</string>
     <string name="titlesurvey06">¿Tiene tiempo para cuidar de la(s) mascota(s)?</string>
-    <string name="regEnd">Finalizar</string>
+    <string name="end">Finalizar</string>
 
     <string name="pets">Mascotas</string>
     <string name="home">Inicio</string>
@@ -35,18 +35,28 @@
     <string name="petreg">Registrar Mascota</string>
     <string name="petimage">Subir Imagen</string>
 
-    <string name="USER_ERROR">Usuario inválido. Mín. 5 caracteres / Máx. 15 caracteres. No puede empezar con símbolo y/o números.</string>
-    <string name="PASS_ERROR">Contraseña inválida. Mín. 5 caracteres / Máx. 10 caracteres. No puede empezar con símbolo y/o números.</string>
+    <string name="USER_ERROR">Mín. 5 - Máx. 15. No puede empezar con símbolo o números.</string>
+    <string name="PASS_ERROR">Mín. 5 - Máx. 10. No puede empezar con símbolo o números.</string>
+
     <string name="NAME_ERROR">Ingrese su(s) nombre(s).</string>
     <string name="LASTNAME_ERROR">Ingrese su(s) apellido(s).</string>
+    <string name="CALENDAR_ERROR">Ingrese su fecha de nacimiento.</string>
+    <string name="DNI_ERROR">Ingrese su DNI.</string>
+    <string name="PHONE_ERROR">Ingrese su teléfono.</string>
+    <string name="EMAIL_ERROR">Ingrese su correo electrónico.</string>
+    <string name="ADDRESS_ERROR">Ingrese su dirección.</string>
+    <string name="DISTRICT_ERROR">Seleccione su distrito.</string>
+
+    <string name="PETNAME_ERROR">Ingresa el nombre de la mascota.</string>
+    <string name="PETAGE_ERROR">Ingresa la edad de la mascota</string>
+    <string name="PETDES_ERROR">Ingresa una descripción de la mascota.</string>
 
     <string name="logout">Cerrar Sesión</string>
 
     <string name="accept">Aceptar</string>
     <string name="refuse">Rechazar</string>
 
-    <string name="deletemsg">¿Eliminar Mascota?</string>
-    <string name="yes">Eliminar</string>
-    <string name="no">Cancelar</string>
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
 
 </resources>

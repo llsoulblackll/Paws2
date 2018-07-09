@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
@@ -41,10 +43,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private OwnerDao ownerDao;
 
-    private TextInputEditText userEditText;
-    private TextInputEditText passEditText;
+    private TextInputEditText userEditText, passEditText;
 
-    AwesomeValidation awesomeValidation;
+    AwesomeValidation av;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,11 @@ public class LoginActivity extends AppCompatActivity {
 
         ownerDao = DaoFactory.getOwnerDao(this);
 
-        awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+        av = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+        av.disableAutoFocusOnFirstFailure();
 
-        awesomeValidation.addValidation(this, R.id.tilUser, "^(?=[^\\d_].*?\\d)\\w(\\w|[!@#$%]){4,14}$*", R.string.USER_ERROR);
-        awesomeValidation.addValidation(this, R.id.tilPass, "^(?=[^\\d_].*?\\d)\\w(\\w|[.!@#$%]){4,9}$", R.string.PASS_ERROR);
+        av.addValidation(this, R.id.tilUser, "^(?=[^\\d_].*?)\\w(\\w|[!&@#$%.,-_]){4,14}$*", R.string.USER_ERROR);
+        av.addValidation(this, R.id.tilPass, "^(?=[^\\d_].*?)\\w(\\w|[!&@#$%.,-_]){4,9}$", R.string.PASS_ERROR);
 
         userEditText = findViewById(R.id.etUser);
         passEditText = findViewById(R.id.etPass);
@@ -74,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void Login(View view) {
-        if (awesomeValidation.validate()) {
+        if (av.validate()) {
             Validate();
         }
     }

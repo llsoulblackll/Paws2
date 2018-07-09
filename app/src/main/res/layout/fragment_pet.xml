@@ -58,7 +58,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilpetage"
+            android:id="@+id/tilPetAge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/petage">
@@ -71,7 +71,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilpetdes"
+            android:id="@+id/tilPetDes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/petdes">
@@ -84,7 +84,7 @@
                 android:inputType="text"
                 android:textSize="15sp"/>
         </android.support.design.widget.TextInputLayout>
-z
+
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/spnTypes"
             android:layout_width="320dp"

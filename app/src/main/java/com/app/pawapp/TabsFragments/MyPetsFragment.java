@@ -26,13 +26,15 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class    MyPetsFragment extends Fragment {
+public class MyPetsFragment extends Fragment {
 
     private ListView listView;
     private ListPetsAdapter adapter;
 
     private PetDao petDao;
     private OwnerDto loggedOwner;
+
+    CharSequence options[] = new CharSequence[]{"Editar Mascota", "Eliminar Mascota"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,19 +55,34 @@ public class    MyPetsFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-                builder.setMessage(R.string.deletemsg)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Toast.makeText(getActivity(), "Mascota Eliminada Satisfactoriamente", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
+                builder.setCancelable(true);
+                builder.setTitle("Eliga una opción");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            LayoutInflater inflater = getActivity().getLayoutInflater();
+                            builder.setView(inflater.inflate(R.layout.activity_edit_pet_dialog, null))
+                                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            Toast.makeText(getActivity(), "Editado", Toast.LENGTH_SHORT).show();
+                                        }
+                                    })
+                                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            builder.show();
+                        } else if (which == 1) {
+                            Toast.makeText(getActivity(), "Mascota Eliminada Satisfactoriamente", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 builder.show();
             }
         });
@@ -77,7 +94,7 @@ public class    MyPetsFragment extends Fragment {
         petDao.findAll(loggedOwner.getId(), new Ws.WsCallback<List<Pet>>() {
             @Override
             public void execute(List<Pet> response) {
-                if(response != null)
+                if (response != null)
                     listView.setAdapter(new ListPetsAdapter(getContext(), response));
             }
         });

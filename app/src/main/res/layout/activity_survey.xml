@@ -205,7 +205,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/regEnd"
+            android:text="@string/end"
             android:backgroundTint="@color/DeepKoamaru"
             android:textColor="@color/White"
             android:onClick="End"/>
