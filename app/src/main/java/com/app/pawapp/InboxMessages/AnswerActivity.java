@@ -54,8 +54,8 @@ public class AnswerActivity extends AppCompatActivity {
 
                     DateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                    timeFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
+                    timeFormat.setTimeZone(TimeZone.getTimeZone("UTC-5h"));
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC-5h"));
 
                     Answer ans;
                     for (PetAdopterDto pa : response) {
@@ -65,7 +65,7 @@ public class AnswerActivity extends AppCompatActivity {
                         else
                             ans.setAnswer("No cumples las condiciones para adoptar a " + pa.getPet().getName() + ".");
 
-                        ans.setImgUrl(pa.getAdopter().getProfilePicture());
+                        ans.setImgUrl(pa.getPet().getOwner().getProfilePicture());
                         ans.setNameOwner(pa.getPet().getOwner().getName());
                         ans.setLastNameOwner(pa.getPet().getOwner().getLastName());
                         ans.setTime(dateFormat.format(pa.getResponseDate()).equals(dateFormat.format(new Date()))
