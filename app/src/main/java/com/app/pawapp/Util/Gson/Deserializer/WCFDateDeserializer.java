@@ -10,6 +10,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * Since WCF uses a weird UTC-8 date format, this deserializer handles that
+ */
 public class WCFDateDeserializer implements JsonDeserializer<Date> {
 
     @Override
@@ -27,6 +30,7 @@ public class WCFDateDeserializer implements JsonDeserializer<Date> {
                 return new Date(Long.parseLong(d.substring(d.indexOf('(') + 1, d.indexOf(')'))));
         }
 
+        //IF ITS A REGULAR PARSABLE DATE
         try {
             return DateFormat.getDateInstance(DateFormat.LONG).parse(d);
         } catch (ParseException e) {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.app.pawapp.Classes.Answer;
 import com.app.pawapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -51,7 +52,13 @@ public class AnswerAdapter extends BaseAdapter {
         TextView message = view.findViewById(R.id.txtAnswer);
         TextView time = view.findViewById(R.id.txtTime);
 
-        img.setImageResource(item.getImgOwner());
+        if (item.getImgUrl() != null && !item.getImgUrl().isEmpty())
+            Picasso.get()
+                    .load(item.getImgUrl())
+                    .placeholder(R.drawable.progress_circle_anim)
+                    .into(img);
+        else
+            img.setImageResource(R.drawable.profile);
         name.setText(item.getNameOwner());
         lastname.setText(item.getLastNameOwner());
         message.setText(item.getAnswer());

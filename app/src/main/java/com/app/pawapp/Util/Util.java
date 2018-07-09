@@ -34,6 +34,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 
 public final class Util {
@@ -186,7 +187,9 @@ public final class Util {
 
         private static final int CONNECTION_TIMEOUT = 420000;
 
-        private static HttpURLConnection urlConnection = null;
+        //SINCE THERE IS ONLY ONE INSTANCE OF THIS URL CONNECTION THERE IS THE POSSIBILITY IT IS CHANGED BY ANOTHER THREAD
+        //NEED TO CHECK ON THREAD SAFETY AND SINGLETON PATTERN
+        //private static HttpURLConnection urlConnection = null;
 
         public interface OnResult {
             void execute(Object response);
@@ -206,11 +209,13 @@ public final class Util {
                 public Object execute(String innerUrl) {
                     String res = null;
 
+                    HttpURLConnection urlConnection = null;
+
                     try {
                         OutputStream requestData = null;
                         BufferedReader responseDataReader = null;
                         try {
-                            urlConnection = (HttpURLConnection) new URL(innerUrl).openConnection();
+                            urlConnection = (HttpURLConnection)new URL(innerUrl).openConnection();
                             urlConnection.setConnectTimeout(CONNECTION_TIMEOUT);
                             urlConnection.setReadTimeout(CONNECTION_TIMEOUT);
                             urlConnection.setRequestMethod(method);
@@ -243,11 +248,18 @@ public final class Util {
                         }
                     } catch (IOException ex) {
                         //throw new RuntimeException(ex);
+                        Scanner sc = null;
                         try {
                             System.out.println(urlConnection.getResponseCode());
+                            //TODO: THE STREAM IS CLOSED (ABOVE FINALLY BLOCK), FIX IT LATER
+                            //sc = new Scanner(urlConnection.getErrorStream()).useDelimiter("\\A");
+                            //System.out.println(sc.hasNext() ? sc.next() : "No error body");
                             System.out.println(urlConnection.getResponseMessage());
-                        } catch (IOException e) {
+                        } catch (IOException | NullPointerException e) {
                             e.printStackTrace();
+                        } finally {
+                            if(sc != null)
+                                sc.close();
                         }
                         ex.printStackTrace();
                         return null;
@@ -256,7 +268,7 @@ public final class Util {
                 }
             };
 
-            new AsyncTaskImpl(onExecute, onResult).execute(url);
+            new AsyncTaskImpl(onExecute, onResult).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
         }
 
         //ON EXECUTE IS THE METHOD TO BE EXECUTED ASYNCHRONOUSLY AND ON RESULT IS EXECUTED WITH THE RESULT OF THAT METHOD AFTER IT IS COMPLETED

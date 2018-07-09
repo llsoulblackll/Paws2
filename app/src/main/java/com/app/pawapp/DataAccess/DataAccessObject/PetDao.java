@@ -52,18 +52,48 @@ public class PetDao implements Ws<Pet>{
     }
 
     @Override
-    public void update(Pet toUpdate, WsCallback<Boolean> onResult) {
-
+    public void update(Pet toUpdate, final WsCallback<Boolean> onResult) {
+        Util.HttpHelper.makeRequest(
+                String.format("%s/%s/%s", Util.URL, ENDPOINT, UPDATE_METHOD),
+                Util.HttpHelper.PUT,
+                null,
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        Boolean result = false;
+                        if(response != null){
+                            WCFResponse<Boolean> res = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Boolean.class));
+                            result = res.getResponse();
+                        }
+                        onResult.execute(result);
+                    }
+                }
+        );
     }
 
     @Override
-    public void delete(Object id, WsCallback<Boolean> onResult) {
-
+    public void delete(Object id, final WsCallback<Boolean> onResult) {
+        Util.HttpHelper.makeRequest(
+                String.format("%s/%s/%s/%s", Util.URL, ENDPOINT, DELETE_METHOD, id),
+                Util.HttpHelper.DELETE,
+                null,
+                new Util.HttpHelper.OnResult() {
+                    @Override
+                    public void execute(Object response) {
+                        Boolean result = false;
+                        if(response != null){
+                            WCFResponse<Boolean> res = gson.fromJson(response.toString(), Util.getType(WCFResponse.class, Boolean.class));
+                            result = res.getResponse();
+                        }
+                        onResult.execute(result);
+                    }
+                }
+        );
     }
 
     @Override
     public void find(Object id, WsCallback<Pet> onResult) {
-
+        throw new RuntimeException("Not implemented");
     }
 
     @Override
@@ -120,9 +150,9 @@ public class PetDao implements Ws<Pet>{
                 });
     }
 
-    public void findAllDto(int ownerId, final WsCallback<List<PetDto>> onResult){
+    public void findAllDto(int ownerId, boolean ownPets, final WsCallback<List<PetDto>> onResult){
         Util.HttpHelper.makeRequest(
-                String.format(Locale.getDefault(),"%s/%s/%s/%d", Util.URL, ENDPOINT, FIND_ALL_DTO_METHOD, ownerId),
+                String.format(Locale.getDefault(),"%s/%s/%s/%d/%b", Util.URL, ENDPOINT, FIND_ALL_DTO_METHOD, ownerId, ownPets),
                 Util.HttpHelper.GET,
                 null,
                 new Util.HttpHelper.OnResult() {

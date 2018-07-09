@@ -81,9 +81,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        ownerDao = DaoFactory.getOwnerDao(getContext());
-        distritcDao = DaoFactory.getDistrictDao(getContext());
-
         txtName = v.findViewById(R.id.txtName);
         txtLastName = v.findViewById(R.id.txtLastName);
         txtDni = v.findViewById(R.id.txtDni);
@@ -116,24 +113,28 @@ public class ProfileFragment extends Fragment {
 
         imgProfilePic = v.findViewById(R.id.imgProfilePic);
 
-        loggedOwner = Util.getLoggedOwner(getContext());
+        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedDistrict = districts.get(i);
+            }
 
-        txtRegisteredPets.setText(String.valueOf(loggedOwner.getRegisteredAmount()));
-        txtAdoptedPets.setText(String.valueOf(loggedOwner.getAdoptedAmount()));
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
-        Picasso.get()
-                .load(loggedOwner.getProfilePicture())
-                .placeholder(R.drawable.progress_circle_anim)
-                .into(imgProfilePic);
-
-        //INSTANCE VARIABLES ARE ALWAYS SAVED SINCE OUR FRAGMENTS ARE NEVER DETACHED FROM THE ACTIVITY
-        if(districts == null) {
+        if(!hasState()){
+            ownerDao = DaoFactory.getOwnerDao(getContext());
+            distritcDao = DaoFactory.getDistrictDao(getContext());
+            loggedOwner = Util.getLoggedOwner(getContext());
+            //INSTANCE VARIABLES ARE ALWAYS SAVED SINCE OUR FRAGMENTS ARE NEVER DETACHED FROM THE ACTIVITY
             distritcDao.findAll(new Ws.WsCallback<List<District>>() {
                 @Override
                 public void execute(List<District> response) {
+                    //CALLBACKS ARE RESOLVED LATER IN THE FUTURE WHEN getContext() CAN POSSIBLY RETURN NULL
                     if (getContext() != null) {
                         districts = response;
-
                         String[] diss = new String[response.size()];
 
                         for (int i = 0, len = response.size(); i < len; i++)
@@ -145,24 +146,31 @@ public class ProfileFragment extends Fragment {
                                 diss));
 
                         selectedDistrict = loggedOwner.getDistrict();
-
                         switchViews(false);
-
-                        spnDistrict.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                selectedDistrict = districts.get(i);
-                            }
-
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-                            }
-                        });
                     }
                 }
             });
-        } else
+        } else {
+            String[] diss = new String[districts.size()];
+
+            for(int i = 0, len = districts.size(); i < len; i++)
+                diss[i] = districts.get(i).getName();
+
+            spnDistrict.setAdapter(new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, diss));
             switchViews(false);
+        }
+
+        //SOME DEFAULT VALUES
+        txtRegisteredPets.setText(String.valueOf(loggedOwner.getRegisteredAmount()));
+        txtAdoptedPets.setText(String.valueOf(loggedOwner.getAdoptedAmount()));
+
+        if(loggedOwner.getProfilePicture() != null && !loggedOwner.getProfilePicture().isEmpty())
+            Picasso.get()
+                .load(loggedOwner.getProfilePicture())
+                .placeholder(R.drawable.progress_circle_anim)
+                .into(imgProfilePic);
+        else
+            imgProfilePic.setImageResource(R.drawable.profile);
 
         v.findViewById(R.id.fabEdit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -414,6 +422,11 @@ public class ProfileFragment extends Fragment {
             txtDistrict.setVisibility(View.VISIBLE);
             spnDistrict.setVisibility(View.GONE);
         }
+    }
+
+    private boolean hasState(){
+        return ownerDao != null && distritcDao != null &&
+        loggedOwner != null && districts != null;
     }
 
 }

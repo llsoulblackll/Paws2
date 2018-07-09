@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.app.pawapp.Adapters.ListPetsAdapter;
@@ -28,9 +29,10 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class    MyPetsFragment extends Fragment {
+public class MyPetsFragment extends Fragment {
 
     private ListView listView;
+    private ProgressBar progressBar;
     private ListPetsAdapter adapter;
 
     private PetDao petDao;
@@ -38,10 +40,7 @@ public class    MyPetsFragment extends Fragment {
 
     private List<PetDto> pets;
 
-    /**
-     * Checks whether the fragment has a state (all instance variables are still set) or not
-     */
-    private boolean hasState = false;
+    //private boolean hasState = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +52,16 @@ public class    MyPetsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_mypets, container, false);
         listView = v.findViewById(R.id.MyPetsList);
+        progressBar = v.findViewById(R.id.petsProgressBar);
 
-        if(!hasState){
+        if(!hasState()){
             petDao = DaoFactory.getPetDao(getContext());
             loggedOwner = Util.getLoggedOwner(getContext());
-
             GetArrayItems(listView);
-
-            hasState = true;
-        } else
+        } else {
             listView.setAdapter(new ListPetsAdapter(getContext(), pets));
+            progressBar.setVisibility(View.GONE);
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -87,8 +86,8 @@ public class    MyPetsFragment extends Fragment {
     }
 
     private void GetArrayItems(ListView toPopulate) {
-        final ProgressDialog pg = ProgressDialog.show(getContext(), "Cargando", "Espere");
-        petDao.findAllDto(loggedOwner.getId(), new Ws.WsCallback<List<PetDto>>() {
+        //final ProgressDialog pg = ProgressDialog.show(getContext(), "Cargando", "Espere");
+        petDao.findAllDto(loggedOwner.getId(), true, new Ws.WsCallback<List<PetDto>>() {
             @Override
             public void execute(List<PetDto> response) {
                 if(getContext() != null) {
@@ -96,8 +95,9 @@ public class    MyPetsFragment extends Fragment {
                         pets = response;
                         listView.setAdapter(new ListPetsAdapter(getContext(), response));
                     }
-                    pg.dismiss();
+                    //pg.dismiss();
                 }
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -105,6 +105,13 @@ public class    MyPetsFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        hasState = false;
+    }
+
+    /**
+     * Checks whether the fragment has a state (all instance variables are still set) or not
+     */
+    private boolean hasState(){
+        return petDao != null && loggedOwner != null && pets != null;
+
     }
 }

@@ -5,10 +5,14 @@ import java.io.Serializable;
 public class Answer implements Serializable {
 
     private int ImgOwner;
+    private String imgUrl;
     private String NameOwner;
     private String LastNameOwner;
     private String Answer;
     private String Time;
+
+    public Answer() {
+    }
 
     public Answer(int imgOwner, String nameOwner, String lastNameOwner, String answer, String time) {
         ImgOwner = imgOwner;
@@ -56,6 +60,14 @@ public class Answer implements Serializable {
 
     public void setTime(String time) {
         Time = time;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
 }

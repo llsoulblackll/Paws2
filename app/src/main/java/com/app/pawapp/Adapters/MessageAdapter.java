@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.app.pawapp.Classes.Message;
 import com.app.pawapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,9 @@ import java.util.List;
 public class MessageAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Message> msg;
+    private List<Message> msg;
 
-    public MessageAdapter(Context context, ArrayList<Message> msg) {
+    public MessageAdapter(Context context, List<Message> msg) {
         this.context = context;
         this.msg = msg;
     }
@@ -56,7 +57,14 @@ public class MessageAdapter extends BaseAdapter {
         TextView message = view.findViewById(R.id.txtMessage);
         TextView time = view.findViewById(R.id.txtTime);
 
-        img.setImageResource(item.getImg());
+        if(item.getImgUrl() != null && !item.getImgUrl().isEmpty())
+            Picasso.get()
+                    .load(item.getImgUrl())
+                    .placeholder(R.drawable.progress_circle_anim)
+                    .into(img);
+        else
+            img.setImageResource(R.drawable.profile);
+
         name.setText(item.getName());
         lastname.setText(item.getLastName());
         message.setText(item.getMessage());

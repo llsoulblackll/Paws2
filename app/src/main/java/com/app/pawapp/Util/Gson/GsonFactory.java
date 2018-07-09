@@ -18,6 +18,7 @@ public final class GsonFactory {
                 .registerTypeAdapter(Date.class, new WCFDateSerializer())
                 .registerTypeAdapter(Date.class, new WCFDateDeserializer())
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .serializeNulls()
                 .create();
     }
 

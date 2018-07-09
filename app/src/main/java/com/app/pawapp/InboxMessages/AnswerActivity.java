@@ -6,14 +6,29 @@ import android.widget.ListView;
 
 import com.app.pawapp.Adapters.AnswerAdapter;
 import com.app.pawapp.Classes.Answer;
+import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
+import com.app.pawapp.DataAccess.DataAccessObject.PetAdopterDao;
+import com.app.pawapp.DataAccess.DataAccessObject.Ws;
+import com.app.pawapp.DataAccess.DataTransferObject.PetAdopterDto;
+import com.app.pawapp.DataAccess.Entity.PetAdopter;
 import com.app.pawapp.R;
+import com.app.pawapp.Util.Util;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class AnswerActivity extends AppCompatActivity {
 
     private ListView listView;
     private AnswerAdapter answerAdapter;
+
+    private List<PetAdopterDto> answers;
+    private PetAdopterDao petAdopterDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,32 +36,49 @@ public class AnswerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_answer);
         setTitle("Repuestas de Solicitudes");
 
+        petAdopterDao = DaoFactory.getPetAdopterDao(this);
+
         listView = findViewById(R.id.answer_list);
-        answerAdapter = new AnswerAdapter(this, GetArrayItems());
-        listView.setAdapter(answerAdapter);
+
+        GetArrayItems(false);
     }
 
-    private ArrayList<Answer> GetArrayItems() {
-        ArrayList<Answer> answer = new ArrayList<>();
+    private void GetArrayItems(boolean block) {
+        petAdopterDao.findAllAnswersDto(Util.getLoggedOwner(this).getId(), new Ws.WsCallback<List<PetAdopterDto>>() {
+            @Override
+            public void execute(List<PetAdopterDto> response) {
+                if (response != null) {
+                    ArrayList<Answer> anss = new ArrayList<>();
 
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-               "Cumples las condiciones para adoptar a <Pet Name>. El dueño se pondrá en contacto contigo durante el día.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "Cumples las condiciones para adoptar a <Pet Name>. El dueño se pondrá en contacto contigo durante el día.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "Cumples las condiciones para adoptar a <Pet Name>. El dueño se pondrá en contacto contigo durante el día.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "No cumples las condiciones para adoptar a <Pet Name>.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "No cumples las condiciones para adoptar a <Pet Name>.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "No cumples las condiciones para adoptar a <Pet Name>.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "No cumples las condiciones para adoptar a <Pet Name>.","10:50 AM"));
-        answer.add(new Answer(R.drawable.profile, "Enrique", "Palacios",
-                "No cumples las condiciones para adoptar a <Pet Name>.","10:50 AM"));
+                    answers = response;
 
-        return answer;
+                    DateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                    timeFormat.setTimeZone(TimeZone.getTimeZone("America/Lima"));
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("America/Lima"));
+
+                    Answer ans;
+                    for (PetAdopterDto pa : response) {
+                        ans = new Answer();
+                        if (pa.isState())
+                            ans.setAnswer("Cumples las condiciones para adoptar a " + pa.getPet().getName() + ". El dueño se pondrá en contacto contigo durante el día.");
+                        else
+                            ans.setAnswer("No cumples las condiciones para adoptar a " + pa.getPet().getName() + ".");
+
+                        ans.setImgUrl(pa.getAdopter().getProfilePicture());
+                        ans.setNameOwner(pa.getPet().getOwner().getName());
+                        ans.setLastNameOwner(pa.getPet().getOwner().getLastName());
+                        ans.setTime(dateFormat.format(pa.getResponseDate()).equals(dateFormat.format(new Date()))
+                                ? timeFormat.format(pa.getResponseDate())
+                                : dateFormat.format(pa.getResponseDate()));
+
+                        anss.add(ans);
+                    }
+
+                    listView.setAdapter(new AnswerAdapter(AnswerActivity.this, anss));
+                }
+            }
+        });
     }
 
 }

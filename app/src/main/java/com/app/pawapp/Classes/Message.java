@@ -5,10 +5,14 @@ import java.io.Serializable;
 public class Message implements Serializable {
 
     private int Img;
+    private String imgUrl;
     private String Name;
     private String LastName;
     private String Message;
     private String Time;
+
+    public Message() {
+    }
 
     public Message(int img, String name, String lastName, String message, String time) {
         Img = img;
@@ -58,4 +62,11 @@ public class Message implements Serializable {
         Time = time;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

@@ -31,4 +31,8 @@ public final class DaoFactory {
         return new RaceDao(context);
     }
 
+    public static PetAdopterDao getPetAdopterDao(Context context) {
+        return new PetAdopterDao(context);
+    }
+
 }

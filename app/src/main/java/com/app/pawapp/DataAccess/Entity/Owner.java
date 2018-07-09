@@ -14,7 +14,8 @@ public class Owner implements Parcelable{
     @SerializedName("Password") private String password;
     @SerializedName("Name") private String name;
     @SerializedName("LastName") private String lastName;
-    @SerializedName("BirthDate") private Date birthDate;
+    //TODO: REMOVE INITIALIZER SINCE SERIALIZE NULLS IS ENABLED IN OUR GSON
+    @SerializedName("BirthDate") private Date birthDate = new Date();
     private String DNI;
     @SerializedName("EMail") private String eMail;
     @SerializedName("Address") private String address;
