@@ -132,8 +132,8 @@ public class InboxActivity extends AppCompatActivity {
 
                     DateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                    timeFormat.setTimeZone(TimeZone.getTimeZone("America/Lima"));
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("America/Lima"));
+                    timeFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC+7"));
                     List<Message> messages = new ArrayList<>();
                     for(PetAdopterDto pa : requests) {
                         Message msg = new Message();
