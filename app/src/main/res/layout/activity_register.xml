@@ -1,210 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
-    android:focusable="false"
-    android:focusableInTouchMode="true"
-    android:gravity="center"
     android:orientation="vertical"
-    android:padding="15dp"
     tools:context=".Register.RegisterActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilUsername"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/username">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/Username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:imeOptions="actionNext"
-                android:textSize="15sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilPassword"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/password">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/Password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:imeOptions="actionNext"
-                android:textSize="15sp" />
-        </android.support.design.widget.TextInputLayout>
-
-    </LinearLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/name">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:imeOptions="actionNext"
-            android:textSize="15sp" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="match_parent"
+            android:background="@color/White"
+            android:focusable="false"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="15dp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilLastname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/lastname">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/LastName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:imeOptions="actionNext"
-            android:textSize="15sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/btnBirthDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/DeepKoamaru"
-            android:text="@string/birthdate"
-            android:textColor="@color/White" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilBirth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/birthdate">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/BirthDate"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
-                android:imeOptions="actionNext"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilUsername"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/username">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/Username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="text"
+                        android:textSize="15sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilPassword"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/password">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/Password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPassword"
+                        android:textSize="15sp" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="15sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilLastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/lastname">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/LastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="15sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/btnBirthDate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/DeepKoamaru"
+                    android:text="@string/birthdate"
+                    android:textColor="@color/White" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilBirth"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/birthdate">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/BirthDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:imeOptions="actionNext"
+                        android:textSize="15sp"
+                        android:theme="@style/CampoTextoAzul" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilDni"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/dni">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/Dni"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:textSize="15sp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tilPhone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/phone">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/Phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="9"
+                        android:textSize="15sp" />
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="textEmailAddress"
+                    android:textSize="15sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tilAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/address">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/Address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:textSize="15sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/spnDistricts"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                android:hint="Elige un distrito"
+                android:imeOptions="actionDone"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:textSize="15sp"
-                android:theme="@style/CampoTextoAzul" />
-        </android.support.design.widget.TextInputLayout>
+                app:met_floatingLabel="normal" />
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilDni"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/dni">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/Dni"
+            <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:imeOptions="actionNext"
-                android:maxLength="8"
-                android:textSize="15sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:backgroundTint="@color/DeepKoamaru"
+                android:onClick="Next"
+                android:text="@string/next"
+                android:textColor="@color/White" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/tilPhone"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/phone">
 
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/Phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:imeOptions="actionNext"
-                android:maxLength="9"
-                android:textSize="15sp" />
-        </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/email">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:imeOptions="actionNext"
-            android:textSize="15sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/tilAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/address">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/Address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:imeOptions="actionNext"
-            android:textSize="15sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/spnDistricts"
-        android:layout_width="320dp"
-        android:layout_height="wrap_content"
-        android:hint="Elige un distrito"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:textSize="15sp"
-        android:imeOptions="actionDone"
-        app:met_floatingLabel="normal" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/DeepKoamaru"
-        android:onClick="Next"
-        android:text="@string/next"
-        android:textColor="@color/White" />
-
-</LinearLayout>
+</RelativeLayout>
