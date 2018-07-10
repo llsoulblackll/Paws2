@@ -4,10 +4,12 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.DistrictDao;
@@ -28,7 +31,12 @@ import com.app.pawapp.DataAccess.Entity.Owner;
 import com.app.pawapp.R;
 import com.app.pawapp.Survey.SurveyActivity;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationHolder;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.basgeekball.awesomevalidation.utility.custom.CustomErrorReset;
+import com.basgeekball.awesomevalidation.utility.custom.CustomValidation;
+import com.basgeekball.awesomevalidation.utility.custom.CustomValidationCallback;
+import com.google.common.collect.Range;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.ParseException;
@@ -37,6 +45,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -54,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText phoneEditText;
     private TextInputEditText emailEditText;
     private TextInputEditText addressEditText;
-    private EditText Birth;
+    private TextInputEditText Birth;
     private DatePickerDialog datePickerDialog;
     private MaterialBetterSpinner materialDesignSpinner;
     private int year;
@@ -67,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String dateString = null;
 
-    AwesomeValidation awesomeValidation;
+    AwesomeValidation av;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +84,17 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         setTitle("Datos Personales");
 
-        awesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
+        av = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
 
-        awesomeValidation.addValidation(this, R.id.tilUsername, "^(?=[^\\d_].*?)\\w(\\w|[!@#$%]){4,14}$", R.string.USER_ERROR);//^(?=[^\d_].*?\d)\w(\w|[!@#$%]){4,14}$
-        awesomeValidation.addValidation(this, R.id.tilPassword, "^(?=[^\\d_].*?\\d)\\w(\\w|[.!@#$%]){4,9}$", R.string.PASS_ERROR);
-        awesomeValidation.addValidation(this, R.id.tilName, "^[a-zA-Z\\s]{1,}$", R.string.NAME_ERROR);
-        awesomeValidation.addValidation(this, R.id.tilLastname, "^[a-zA-Z\\s]{1,}$", R.string.LASTNAME_ERROR);
+        av.addValidation(this, R.id.tilUsername, "^(?=[^\\d_].*?)\\w(\\w|[!&@#$%.,-_]){4,14}$", R.string.USER_ERROR);
+        av.addValidation(this, R.id.tilPassword, "^(?=[^\\d_].*?)\\w(\\w|[!&@#$%.,-_]){4,9}$", R.string.PASS_ERROR);
+        av.addValidation(this, R.id.tilName, "^[a-zA-Z\\s]{3,}$", R.string.NAME_ERROR);
+        av.addValidation(this, R.id.tilLastname, "^[a-zA-Z\\s]{2,}$", R.string.LASTNAME_ERROR);
+        av.addValidation(this, R.id.tilBirth, "[\\s\\S]+", R.string.CALENDAR_ERROR);
+        av.addValidation(this, R.id.tilDni, "^[0-9]{1,8}$", R.string.DNI_ERROR);
+        av.addValidation(this, R.id.tilPhone, "^[0-9]{1,9}$", R.string.PHONE_ERROR);
+        av.addValidation(this, R.id.tilEmail, Patterns.EMAIL_ADDRESS, R.string.EMAIL_ERROR);
+        av.addValidation(this, R.id.tilAddress, "^[a-zA-Z0-9\\s-.,]{4,50}$", R.string.ADDRESS_ERROR);
 
         districtDao = DaoFactory.getDistrictDao(this);
         surveyDao = DaoFactory.getSurveyDao(this);
@@ -168,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void Next(View view) throws ParseException {
-        if (awesomeValidation.validate()) {
+        if (av.validate()) {
             Validate();
         }
     }

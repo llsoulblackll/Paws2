@@ -16,6 +16,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:id="@+id/imgProfile"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_marginTop="10dp"
@@ -80,6 +81,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtDni"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -89,6 +91,7 @@
                     android:text="@string/dni" />
 
                 <TextView
+                    android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -98,6 +101,7 @@
                     android:text="@string/email" />
 
                 <TextView
+                    android:id="@+id/txtPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_phone"
@@ -124,6 +128,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/txtHomeType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -133,6 +138,7 @@
                     android:text="@string/titlesurvey01" />
 
                 <TextView
+                    android:id="@+id/txtAmountOfPeople"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -142,6 +148,7 @@
                     android:text="@string/titlesurvey02" />
 
                 <TextView
+                    android:id="@+id/txtOtherPets"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -151,6 +158,7 @@
                     android:text="@string/titlesurvey03" />
 
                 <TextView
+                    android:id="@+id/txtOtherPetsType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -160,6 +168,7 @@
                     android:text="@string/titlesurvey04" />
 
                 <TextView
+                    android:id="@+id/txtWorkType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -169,6 +178,7 @@
                     android:text="@string/titlesurvey05" />
 
                 <TextView
+                    android:id="@+id/txtTimeAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_time"

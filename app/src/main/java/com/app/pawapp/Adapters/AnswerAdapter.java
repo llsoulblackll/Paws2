@@ -56,9 +56,11 @@ public class AnswerAdapter extends BaseAdapter {
             Picasso.get()
                     .load(item.getImgUrl())
                     .placeholder(R.drawable.progress_circle_anim)
+                    .fit()
                     .into(img);
         else
             img.setImageResource(R.drawable.profile);
+
         name.setText(item.getNameOwner());
         lastname.setText(item.getLastNameOwner());
         message.setText(item.getAnswer());

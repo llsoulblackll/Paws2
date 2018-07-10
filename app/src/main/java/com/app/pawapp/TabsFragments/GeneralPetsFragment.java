@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class GeneralPetsFragment extends Fragment {
 
     private ListView listView;
     private ProgressBar progressBar;
+    private SwipeRefreshLayout refresher;
     private ListPetsAdapter adapter;
 
     private View layout;
@@ -62,6 +64,7 @@ public class GeneralPetsFragment extends Fragment {
         layout = inflater.inflate(R.layout.fragment_generalpets, container, false);
         listView = layout.findViewById(R.id.GeneralList);
         progressBar = layout.findViewById(R.id.petsProgressBar);
+        refresher = layout.findViewById(R.id.refresher);
 
         //IS ALWAYS NULL FOR SOME REASON
         if(savedInstanceState == null) {
@@ -76,6 +79,14 @@ public class GeneralPetsFragment extends Fragment {
             listView.setAdapter(new ListPetsAdapter(getContext(), pets));
             progressBar.setVisibility(View.GONE);
         }
+
+        refresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GetArrayItems(listView);
+                refresher.setRefreshing(false);
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -125,6 +136,7 @@ public class GeneralPetsFragment extends Fragment {
                                         Picasso.get()
                                                 .load(selectedPet.getOwner().getProfilePicture())
                                                 .placeholder(R.drawable.progress_circle_anim)
+                                                .fit()
                                                 .into((ImageView)view.findViewById(R.id.imgProfile));
                                     else
                                         Picasso.get()
@@ -151,7 +163,9 @@ public class GeneralPetsFragment extends Fragment {
         return layout;
     }
 
-    private void GetArrayItems(ListView toPopulate) {
+    private void GetArrayItems(final ListView toPopulate) {
+        toPopulate.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         petDao.findAllDto(loggedOwner.getId(), false, new Ws.WsCallback<List<PetDto>>() {
             @Override
             public void execute(List<PetDto> response) {
@@ -161,6 +175,7 @@ public class GeneralPetsFragment extends Fragment {
                         listView.setAdapter(new ListPetsAdapter(getContext(), response));
                     }
                 }
+                toPopulate.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
             }
         });

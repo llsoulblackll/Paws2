@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingRight="15dp"
+    android:paddingLeft="15dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:focusable="false"
+    android:focusableInTouchMode="true"
+    tools:context=".DialogUser.EditPetDialogActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <ImageView
+            android:id="@+id/imgEditPet"
+            android:layout_width="0dp"
+            android:layout_height="95dp"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:src="@drawable/pet_icon" />
+
+        <Button
+            android:id="@+id/btnEditPetImage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/petimage" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilEditPetName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/petname">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/EditPetName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="15sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilEditPetAge"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/petage">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/EditPetAge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="15sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilEditPetDes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/petdes">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/EditPetDes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="15sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/spnEditTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tipo de mascota"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="15sp"
+        app:met_floatingLabel="normal" />
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/spnEditRaces"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Raza de la mascota"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textSize="15sp"
+        app:met_floatingLabel="normal" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tilEditPetRace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Raza">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etEditPetRace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:visibility="gone" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

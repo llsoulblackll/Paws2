@@ -65,7 +65,7 @@ public class ListPetsAdapter extends BaseAdapter {
             Picasso.get()
                     .load(item.getPicture())
                     .fit()
-                    .centerCrop()
+                    .centerInside()
                     .placeholder(R.drawable.progress_circle_anim)
                     .into(img);
         }

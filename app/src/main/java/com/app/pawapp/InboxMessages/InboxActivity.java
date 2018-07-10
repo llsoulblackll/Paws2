@@ -9,20 +9,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.pawapp.Adapters.MessageAdapter;
 import com.app.pawapp.Classes.Message;
 import com.app.pawapp.DataAccess.DataAccessObject.DaoFactory;
 import com.app.pawapp.DataAccess.DataAccessObject.PetAdopterDao;
+import com.app.pawapp.DataAccess.DataAccessObject.SurveyDao;
 import com.app.pawapp.DataAccess.DataAccessObject.Ws;
 import com.app.pawapp.DataAccess.DataTransferObject.OwnerDto;
 import com.app.pawapp.DataAccess.DataTransferObject.PetAdopterDto;
 import com.app.pawapp.DataAccess.Entity.PetAdopter;
+import com.app.pawapp.DataAccess.Entity.Survey;
 import com.app.pawapp.DialogUser.InfoDialogActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Util.Util;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +45,7 @@ public class InboxActivity extends AppCompatActivity {
     private OwnerDto loggedOwner;
     private List<PetAdopterDto> requests;
     private PetAdopterDao petAdopterDao;
+    private SurveyDao surveyDao;
 
     CharSequence options[] = new CharSequence[]{"Ver Información de Usuario", "Cancelar"};
 
@@ -50,6 +56,7 @@ public class InboxActivity extends AppCompatActivity {
         setTitle("Solicitud de Adopciones");
 
         petAdopterDao = DaoFactory.getPetAdopterDao(this);
+        surveyDao = DaoFactory.getSurveyDao(this);
         loggedOwner = Util.getLoggedOwner(this);
 
         lv = findViewById(R.id.inbox_list);
@@ -64,7 +71,38 @@ public class InboxActivity extends AppCompatActivity {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(InboxActivity.this);
                 LayoutInflater inflater = InboxActivity.this.getLayoutInflater();
-                builder.setView(inflater.inflate(R.layout.activity_info_dialog, null))
+
+                final View v = inflater.inflate(R.layout.activity_info_dialog, null);
+
+                Picasso.get()
+                        .load(selected.getAdopter().getProfilePicture())
+                        .placeholder(R.drawable.progress_circle_anim)
+                        .fit()
+                        .into(((ImageView)v.findViewById(R.id.imgProfile)));
+                ((TextView)v.findViewById(R.id.txtName)).setText(selected.getAdopter().getName());
+                ((TextView)v.findViewById(R.id.txtLastName)).setText(selected.getAdopter().getLastName());
+                ((TextView)v.findViewById(R.id.txtDni)).setText(selected.getAdopter().getDNI());
+                ((TextView)v.findViewById(R.id.txtEmail)).setText(selected.getAdopter().geteMail());
+                ((TextView)v.findViewById(R.id.txtPhone)).setText(selected.getAdopter().getPhoneNumber());
+
+                surveyDao.find(selected.getAdopter().getId(), new Ws.WsCallback<Survey>() {
+                    @Override
+                    public void execute(Survey response) {
+                        if(response != null) {
+                            ((TextView) v.findViewById(R.id.txtHomeType)).setText(response.getHomeDescription());
+                            ((TextView)v.findViewById(R.id.txtAmountOfPeople)).setText(response.getAmountOfPeople());
+                            ((TextView)v.findViewById(R.id.txtOtherPets)).setText(response.isOtherPets() ? "Si" : "No");
+                            ((TextView)v.findViewById(R.id.txtOtherPetsType)).setText(response.getOtherPetsDescription());
+                            ((TextView)v.findViewById(R.id.txtWorkType)).setText(response.getWorkType());
+                            ((TextView)v.findViewById(R.id.txtTimeAmount)).setText(response.getAvailability());
+                        } else {
+                            finish();
+                            Toast.makeText(InboxActivity.this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                builder.setView(v)
                         .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {

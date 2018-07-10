@@ -61,7 +61,7 @@ public class AnswerActivity extends AppCompatActivity {
                     for (PetAdopterDto pa : response) {
                         ans = new Answer();
                         if (pa.isState())
-                            ans.setAnswer("Cumples las condiciones para adoptar a " + pa.getPet().getName() + ". El dueño se pondrá en contacto contigo durante el día.");
+                            ans.setAnswer("Cumples las condiciones para adoptar a " + pa.getPet().getName() + ". Me pondre contigo durante el día.");
                         else
                             ans.setAnswer("No cumples las condiciones para adoptar a " + pa.getPet().getName() + ".");
 

@@ -1,5 +1,6 @@
 package com.app.pawapp.Fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -166,9 +167,11 @@ public class ProfileFragment extends Fragment {
 
         if(loggedOwner.getProfilePicture() != null && !loggedOwner.getProfilePicture().isEmpty())
             Picasso.get()
-                .load(loggedOwner.getProfilePicture())
-                .placeholder(R.drawable.progress_circle_anim)
-                .into(imgProfilePic);
+                    .load(loggedOwner.getProfilePicture())
+                    .fit()
+                    .centerInside()
+                    .placeholder(R.drawable.progress_circle_anim)
+                    .into(imgProfilePic);
         else
             imgProfilePic.setImageResource(R.drawable.profile);
 
@@ -271,7 +274,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PROFILE_PIC_REQUEST_CODE) {
+        if (requestCode == PROFILE_PIC_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             try {
 
                 if (data != null) {

@@ -53,10 +53,11 @@ public class PetDao implements Ws<Pet>{
 
     @Override
     public void update(Pet toUpdate, final WsCallback<Boolean> onResult) {
+        System.out.println(gson.toJson(toUpdate));
         Util.HttpHelper.makeRequest(
                 String.format("%s/%s/%s", Util.URL, ENDPOINT, UPDATE_METHOD),
                 Util.HttpHelper.PUT,
-                null,
+                gson.toJson(toUpdate),
                 new Util.HttpHelper.OnResult() {
                     @Override
                     public void execute(Object response) {

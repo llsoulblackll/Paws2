@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="colorPrimaryPaw">#314B72</color>
-    <color name="colorPrimaryDarkPaw">#253956</color>
-    <color name="colorAccentPaw">#253956</color>
+    <color name="colorPrimary">#314B72</color>
+    <color name="colorPrimaryDark">#253956</color>
+    <color name="colorAccent">#253956</color>
 
     <color name="DeepKoamaru">#314B72</color>
     <color name="JapaneseIndigo">#253956</color>

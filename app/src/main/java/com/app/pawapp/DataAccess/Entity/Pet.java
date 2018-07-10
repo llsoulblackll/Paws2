@@ -13,7 +13,7 @@ public class Pet implements Parcelable {
     @SerializedName("Name") private String name;
     @SerializedName("Age") private String age;
     @SerializedName("Description") private String description;
-    @SerializedName("PawPicture") private String picture;
+    @SerializedName("Picture") private String picture;
     @SerializedName("PublishDate") private Date publishDate;
     @SerializedName("State") private boolean state;
     @SerializedName("OtherRace") private String otherRace;
