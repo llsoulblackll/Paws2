@@ -281,7 +281,7 @@ public class ProfileFragment extends Fragment {
 
                     selectedPicture = Util.getPictureFromIntent(data, getContext());
 
-                    Owner o = new Owner(
+                    final Owner o = new Owner(
                             loggedOwner.getId(),
                             loggedOwner.getUsername(),
                             loggedOwner.getPassword(),
@@ -303,8 +303,8 @@ public class ProfileFragment extends Fragment {
                         public void execute(Boolean response) {
                             if (response) {
                                 Owner own = new Owner();
-                                own.setUsername(own.getUsername());
-                                own.setPassword(own.getPassword());
+                                own.setUsername(o.getUsername());
+                                own.setPassword(o.getPassword());
 
                                 ownerDao.fullLogin(own, new Ws.WsCallback<OwnerDto>() {
                                     @Override

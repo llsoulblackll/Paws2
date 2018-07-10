@@ -6,12 +6,16 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ProgressBar;
 
 import com.app.pawapp.Login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +31,32 @@ public class SplashActivity extends AppCompatActivity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
+        progressBar = findViewById(R.id.ProgressBar);
+
+        new Thread(new Runnable() {
             public void run() {
-                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(i);
+                loading();
+                startLogin();
                 finish();
             }
-        }, 5000);
+        }).start();
+
     }
+
+    private void loading() {
+        for (int progress=0; progress<100; progress+=10) {
+            try {
+                Thread.sleep(250);
+                progressBar.setProgress(progress);
+            } catch (Exception e) {
+                Log.e(e.getClass().getName(), e.getMessage(), e.getCause());
+            }
+        }
+    }
+
+    private void startLogin() {
+        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+        startActivity(i);
+    }
+
 }

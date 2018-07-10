@@ -27,6 +27,7 @@ import com.app.pawapp.DataAccess.DataAccessObject.Ws;
 import com.app.pawapp.DataAccess.Entity.Pet;
 import com.app.pawapp.DataAccess.Entity.Race;
 import com.app.pawapp.DataAccess.Entity.Specie;
+import com.app.pawapp.MainActivity;
 import com.app.pawapp.R;
 import com.app.pawapp.Util.Util;
 import com.basgeekball.awesomevalidation.AwesomeValidation;

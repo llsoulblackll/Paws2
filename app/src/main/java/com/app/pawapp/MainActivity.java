@@ -18,6 +18,7 @@ import com.app.pawapp.Fragments.HomeFragment;
 import com.app.pawapp.Fragments.PetFragment;
 import com.app.pawapp.Fragments.ProfileFragment;
 import com.app.pawapp.Util.Util;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
 
 public class MainActivity extends AppCompatActivity {
 

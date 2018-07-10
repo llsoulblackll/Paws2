@@ -74,11 +74,15 @@ public class InboxActivity extends AppCompatActivity {
 
                 final View v = inflater.inflate(R.layout.activity_info_dialog, null);
 
-                Picasso.get()
-                        .load(selected.getAdopter().getProfilePicture())
-                        .placeholder(R.drawable.progress_circle_anim)
-                        .fit()
-                        .into(((ImageView)v.findViewById(R.id.imgProfile)));
+                if(selected.getAdopter().getProfilePicture() != null && !selected.getAdopter().getProfilePicture().isEmpty()) {
+                    Picasso.get()
+                            .load(selected.getAdopter().getProfilePicture())
+                            .placeholder(R.drawable.progress_circle_anim)
+                            .fit()
+                            .into(((ImageView) v.findViewById(R.id.imgProfile)));
+                } else
+                    ((ImageView) v.findViewById(R.id.imgProfile)).setImageResource(R.drawable.profile);
+
                 ((TextView)v.findViewById(R.id.txtName)).setText(selected.getAdopter().getName());
                 ((TextView)v.findViewById(R.id.txtLastName)).setText(selected.getAdopter().getLastName());
                 ((TextView)v.findViewById(R.id.txtDni)).setText(selected.getAdopter().getDNI());
