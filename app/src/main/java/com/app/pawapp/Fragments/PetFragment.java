@@ -177,7 +177,7 @@ public class PetFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         av.addValidation(getActivity(), R.id.tilPetName, "^[a-zA-Z]{2,}$", R.string.PETNAME_ERROR);
-        av.addValidation(getActivity(), R.id.tilPetAge, "[a-zA-Z0-9\\s]{1,}$", R.string.PETAGE_ERROR);
+        av.addValidation(getActivity(), R.id.tilPetAge, "^[a-zA-Z0-9\\s]{1,}$", R.string.PETAGE_ERROR);
         av.addValidation(getActivity(), R.id.tilPetDes, "^[a-zA-Z0-9\\s-.,]{4,50}$", R.string.PETDES_ERROR);
         petRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,16 +217,18 @@ public class PetFragment extends Fragment {
             try {
 
                 PawPicture pic = Util.getPictureFromIntent(data, getContext());
-                selectedImg = pic.getImage();
-                selectedImgExtension = pic.getType();
-                //load image with a placeholder for how long it takes
-                Picasso.get()
-                        .load(pic.getUri())
-                        .placeholder(R.drawable.progress_circle_anim)
-                        .fit()
-                        .centerInside()
-                        .into(petImageView);
+                if(pic != null) {
+                    selectedImg = pic.getImage();
+                    selectedImgExtension = pic.getType();
+                    //load image with a placeholder for how long it takes
+                    Picasso.get()
+                            .load(pic.getUri())
+                            .placeholder(R.drawable.progress_circle_anim)
+                            .fit()
+                            .centerInside()
+                            .into(petImageView);
 
+                }
             } catch (IOException | NullPointerException e) {
                 Util.showAlert("Hubo un error al seleccionar la imagen", getContext());
             }
